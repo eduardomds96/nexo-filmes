@@ -1,7 +1,14 @@
 import { loadRemote, registerRemotes } from '@module-federation/runtime';
 import type { RemoteModuleId, RemoteModuleMap, RemoteName } from '@nexo/contracts';
 
-declare const __NEXO_REMOTES__: Record<RemoteName, string>;
+import type { RemoteEntries } from './remote-manifest';
+
+declare const __NEXO_REMOTES__: RemoteEntries;
+
+/** URLs embutidas no build (variáveis VITE_REMOTE_*_URL ou localhost). */
+export const BUILD_REMOTE_ENTRIES: RemoteEntries = __NEXO_REMOTES__;
+
+let entries: RemoteEntries = BUILD_REMOTE_ENTRIES;
 
 export type RemoteModule<Id extends RemoteModuleId> = { default: RemoteModuleMap[Id] };
 
@@ -24,8 +31,9 @@ function register(name: RemoteName, entry: string, force: boolean): void {
 }
 
 /** Registra no runtime do Module Federation os remotes conhecidos pelo Shell. */
-export function registerKnownRemotes(): void {
-  for (const [name, entry] of Object.entries(__NEXO_REMOTES__)) {
+export function registerKnownRemotes(resolved: RemoteEntries = BUILD_REMOTE_ENTRIES): void {
+  entries = resolved;
+  for (const [name, entry] of Object.entries(entries)) {
     register(name as RemoteName, entry, false);
   }
 }
@@ -42,7 +50,7 @@ const failures = new Map<RemoteName, number>();
  * o que força uma nova requisição do remoteEntry.
  */
 function prepareRetry(remote: RemoteName, attempt: number): void {
-  const entry = new URL(__NEXO_REMOTES__[remote]);
+  const entry = new URL(entries[remote]);
   entry.searchParams.set('tentativa', String(attempt));
   register(remote, entry.href, true);
 }

@@ -20,7 +20,8 @@
     "react-dom": "19.3.0",
     "react-error-boundary": "6.1.6",
     "react-router": "8.4.0",
-    "sonner": "2.0.8"
+    "sonner": "2.0.8",
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "@module-federation/vite": "1.23.2",

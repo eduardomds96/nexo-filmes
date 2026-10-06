@@ -4,7 +4,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { App } from './app/App';
-import { registerKnownRemotes } from './remotes/remote-loader';
+import { BUILD_REMOTE_ENTRIES, registerKnownRemotes } from './remotes/remote-loader';
+import { resolveRemoteEntries } from './remotes/remote-manifest';
 import { applyTheme, currentTheme } from './theme/theme';
 
 // Modo de dados simulados: a TMDB é respondida por um service worker (MSW).
@@ -14,7 +15,8 @@ if (import.meta.env.VITE_TMDB_MOCK === 'true') {
 }
 
 applyTheme(currentTheme());
-registerKnownRemotes();
+const { entries } = await resolveRemoteEntries(BUILD_REMOTE_ENTRIES);
+registerKnownRemotes(entries);
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Elemento #root não encontrado.');
