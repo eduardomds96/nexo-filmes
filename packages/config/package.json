@@ -7,7 +7,10 @@
     "./eslint": "./eslint.config.js",
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./tsconfig.react.json": "./tsconfig.react.json",
-    "./vitest": "./vitest.shared.js",
+    "./vitest": {
+      "types": "./vitest.shared.d.ts",
+      "default": "./vitest.shared.js"
+    },
     "./federation": {
       "types": "./federation.d.ts",
       "default": "./federation.js"

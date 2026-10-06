@@ -7,3 +7,8 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - vite@8.3.3
+
+peerDependencyRules:
+  allowedVersions:
+    # @vitest/mocker declara msw ^2 como peer opcional; o MSW 3 é compatível.
+    msw: '3'
