@@ -6,7 +6,7 @@ import {
   createUserDataStore,
   UserDataProvider,
 } from '@nexo/user-data';
-import type { LocalRepositoryOptions } from '@nexo/user-data';
+import type { LocalRepositoryOptions, UserDataStore } from '@nexo/user-data';
 import type { ReactElement } from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 
@@ -14,6 +14,8 @@ interface RenderOptions {
   readonly path: string;
   readonly initialEntry: string;
   readonly repository?: Partial<LocalRepositoryOptions>;
+  /** Store pronta, no lugar da criada a partir de `repository`. */
+  readonly store?: UserDataStore;
 }
 
 /** Utilitários de teste compartilhados pelos micro-frontends (nunca usados em produção). */
@@ -21,19 +23,21 @@ interface RenderOptions {
 /** Renderiza uma página do remote com o que o Shell forneceria: roteador, QueryClient e store. */
 export function renderRoute(
   element: ReactElement,
-  { path, initialEntry, repository }: RenderOptions,
+  { path, initialEntry, repository, store: givenStore }: RenderOptions,
 ) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: Infinity } },
   });
-  const store = createUserDataStore({
-    repository: createLocalUserDataRepository({
-      storage: createMemoryStorage(),
-      delay: 0,
-      shouldFail: () => false,
-      ...repository,
-    }),
-  });
+  const store =
+    givenStore ??
+    createUserDataStore({
+      repository: createLocalUserDataRepository({
+        storage: createMemoryStorage(),
+        delay: 0,
+        shouldFail: () => false,
+        ...repository,
+      }),
+    });
   const router = createMemoryRouter([{ path, element }], { initialEntries: [initialEntry] });
 
   const utils = render(
