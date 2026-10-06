@@ -83,7 +83,13 @@ export function MovieCardSkeleton() {
 }
 
 /** Grade responsiva usada no catálogo e nos favoritos (2 colunas em 360 px). */
-export function MovieGrid({ className, children }: { className?: string; children: ReactNode }) {
+export function MovieGrid({
+  className,
+  children,
+}: {
+  className?: string | undefined;
+  children: ReactNode;
+}) {
   return (
     <ul
       className={cn(
