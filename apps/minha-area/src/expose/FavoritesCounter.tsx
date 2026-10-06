@@ -1,10 +1,10 @@
-import type { FavoritesCounterProps } from '@nexo/contracts';
-import { Link } from 'react-router';
+import '../styles/remote.css';
 
-export default function FavoritesCounter({ className }: FavoritesCounterProps) {
-  return (
-    <Link to="/favoritos" className={className}>
-      Favoritos: 0
-    </Link>
-  );
+import type { FavoritesCounterProps } from '@nexo/contracts';
+
+import { FavoritesCounter as Counter } from '../ui/FavoritesCounter';
+
+/** Widget do cabeçalho, exposto ao Shell via Module Federation. */
+export default function FavoritesCounter(props: FavoritesCounterProps) {
+  return <Counter {...props} />;
 }

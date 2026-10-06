@@ -1,0 +1,10 @@
+/*
+ * CSS deste remote quando integrado ao Shell: só os utilitários que ele usa.
+ * Preflight, tokens e base vêm do Shell, uma única vez (ver docs/adr/0004).
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '@nexo/ui/styles/theme.css';
+
+@source '../../../../packages/ui/src';

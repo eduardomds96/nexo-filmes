@@ -1,27 +1,55 @@
 /**
- * Mini-shell de desenvolvimento: permite rodar este micro-frontend sozinho.
- * Não é exposto via Module Federation e nunca chega ao Shell.
+ * Mini-shell de desenvolvimento: permite rodar este micro-frontend sozinho
+ * (`pnpm --filter @nexo/minha-area dev`). Reproduz o que o Shell oferece aos
+ * remotes: roteador, QueryClient, Toaster, estilos de base e o lugar do
+ * contador no cabeçalho. Não é exposto via Module Federation.
  */
+import './dev.css';
+
+import { Toaster } from '@nexo/ui';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
+import { createBrowserRouter, Link, Navigate, Outlet, RouterProvider } from 'react-router';
 
 import DashboardPage from '../expose/DashboardPage';
 import FavoritesCounter from '../expose/FavoritesCounter';
 import FavoritesPage from '../expose/FavoritesPage';
 
+const queryClient = new QueryClient();
+
+function DevLayout() {
+  return (
+    <div data-nexo-remote="minha_area" className="mx-auto max-w-7xl px-4 py-6">
+      <header className="mb-4 flex flex-wrap items-center gap-3 rounded-md border border-dashed p-2 text-sm text-muted-foreground">
+        <span>Minha área rodando isolada ·</span>
+        <Link className="underline" to="/favoritos">
+          /favoritos
+        </Link>
+        <Link className="underline" to="/painel">
+          /painel
+        </Link>
+        <span className="ml-auto">
+          <FavoritesCounter />
+        </span>
+      </header>
+      <main id="conteudo">
+        <Outlet />
+      </main>
+    </div>
+  );
+}
+
 const router = createBrowserRouter([
-  { path: '/', element: <Navigate to="/favoritos" replace /> },
   {
-    path: '/favoritos',
-    element: (
-      <>
-        <FavoritesCounter />
-        <FavoritesPage />
-      </>
-    ),
+    element: <DevLayout />,
+    children: [
+      { path: '/', element: <Navigate to="/favoritos" replace /> },
+      { path: '/favoritos', element: <FavoritesPage /> },
+      { path: '/painel', element: <DashboardPage /> },
+      { path: '*', element: <p>Rota fora deste micro-frontend.</p> },
+    ],
   },
-  { path: '/painel', element: <DashboardPage /> },
 ]);
 
 const root = document.getElementById('root');
@@ -29,6 +57,9 @@ if (!root) throw new Error('Elemento #root não encontrado.');
 
 createRoot(root).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster />
+    </QueryClientProvider>
   </StrictMode>,
 );
