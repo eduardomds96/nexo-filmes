@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { createTmdbClient } from './client';
-import { TmdbError, isRetryableTmdbError } from './errors';
+import { isRetryableTmdbError, shouldRetryTmdbRequest, TmdbError } from './errors';
 import { rateLimitedResponse, tmdbHandlers, tmdbUrl } from './testing/handlers';
 
 const server = setupServer(...tmdbHandlers);
@@ -174,5 +174,16 @@ describe('createTmdbClient', () => {
       expect(error).toBeInstanceOf(DOMException);
       expect((error as DOMException).name).toBe('AbortError');
     });
+  });
+});
+
+describe('shouldRetryTmdbRequest', () => {
+  it('repete uma vez só para rede e servidor, nunca para 429', () => {
+    expect(shouldRetryTmdbRequest(0, new TmdbError('network'))).toBe(true);
+    expect(shouldRetryTmdbRequest(0, new TmdbError('server'))).toBe(true);
+    expect(shouldRetryTmdbRequest(1, new TmdbError('server'))).toBe(false);
+    expect(shouldRetryTmdbRequest(0, new TmdbError('rate-limit'))).toBe(false);
+    expect(shouldRetryTmdbRequest(0, new TmdbError('not-found'))).toBe(false);
+    expect(shouldRetryTmdbRequest(0, new Error('outro'))).toBe(false);
   });
 });

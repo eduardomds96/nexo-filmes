@@ -11,7 +11,14 @@ export {
   toVoteAverage,
   yearFromDate,
 } from './adapter';
-export { isAbortError, isRetryableTmdbError, isTmdbError, TmdbError } from './errors';
+export {
+  isAbortError,
+  isRetryableTmdbError,
+  isTmdbError,
+  MAX_AUTOMATIC_RETRIES,
+  shouldRetryTmdbRequest,
+  TmdbError,
+} from './errors';
 export type { TmdbErrorKind } from './errors';
 export { tmdbImageUrl, TMDB_IMAGE_BASE_URL } from './images';
 export type { ImageSize } from './images';
