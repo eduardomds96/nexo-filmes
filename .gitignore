@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.turbo/
+.__mf__temp/
+__mf__temp/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+playwright-report/
+test-results/
