@@ -104,7 +104,7 @@ export default tseslint.config(
         { object: 'globalThis', property: 'localStorage', message: localStorageMessage },
         { object: 'self', property: 'localStorage', message: localStorageMessage },
       ],
-      'import-x/no-cycle': 'error',
+      'import-x/no-cycle': ['error', { ignoreExternal: true }],
       'import-x/no-self-import': 'error',
     },
   },
