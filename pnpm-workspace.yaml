@@ -4,3 +4,6 @@ packages:
 
 allowBuilds:
   unrs-resolver: false
+
+minimumReleaseAgeExclude:
+  - vite@8.3.3
