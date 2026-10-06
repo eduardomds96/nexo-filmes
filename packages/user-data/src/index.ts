@@ -41,3 +41,5 @@ export { createMemoryStorage } from './storage';
 export type { KeyValueStorage } from './storage';
 export { createUserDataStore } from './store';
 export type { LoadStatus, ToggleFavoriteResult, UserDataState, UserDataStore } from './store';
+export { readThemePreference, THEME_STORAGE_KEY, writeThemePreference } from './preferences';
+export type { ThemePreference } from './preferences';
