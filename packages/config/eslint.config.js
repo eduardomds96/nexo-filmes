@@ -114,12 +114,15 @@ export default tseslint.config(
   },
   {
     files: ['**/*.{ts,tsx}'],
-    plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-    },
+    plugins: { 'react-hooks': reactHooks },
+    rules: reactHooks.configs.recommended.rules,
+  },
+  {
+    // Fast refresh só importa nos apps (os dev servers); pacotes exportam hooks e helpers.
+    files: ['apps/*/src/**/*.tsx'],
+    ignores: ['**/*.test.tsx'],
+    plugins: { 'react-refresh': reactRefresh },
     rules: {
-      ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
