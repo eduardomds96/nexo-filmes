@@ -34,8 +34,6 @@ export function visiblePages(page: number, totalPages: number): (number | null)[
   return result;
 }
 
-const disabledClass = 'pointer-events-none opacity-50';
-
 export function Pagination({
   page,
   totalPages,
@@ -64,13 +62,15 @@ export function Pagination({
               <span className="hidden sm:inline">Anterior</span>
             </LinkComponent>
           ) : (
-            <span
-              aria-hidden="true"
-              className={cn(buttonVariants({ variant: 'outline' }), disabledClass)}
+            <button
+              type="button"
+              disabled
+              aria-label="Página anterior"
+              className={buttonVariants({ variant: 'outline' })}
             >
-              <ChevronLeft />
+              <ChevronLeft aria-hidden="true" />
               <span className="hidden sm:inline">Anterior</span>
-            </span>
+            </button>
           )}
         </li>
         {visiblePages(page, totalPages).map((p, index) =>
@@ -105,13 +105,15 @@ export function Pagination({
               <ChevronRight aria-hidden="true" />
             </LinkComponent>
           ) : (
-            <span
-              aria-hidden="true"
-              className={cn(buttonVariants({ variant: 'outline' }), disabledClass)}
+            <button
+              type="button"
+              disabled
+              aria-label="Próxima página"
+              className={buttonVariants({ variant: 'outline' })}
             >
               <span className="hidden sm:inline">Próxima</span>
-              <ChevronRight />
-            </span>
+              <ChevronRight aria-hidden="true" />
+            </button>
           )}
         </li>
       </ul>
