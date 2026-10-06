@@ -1,6 +1,8 @@
 import { federation } from '@module-federation/vite';
 import { createShared, PORTS, remoteEntries } from '@nexo/config/federation';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import { msw } from 'msw/vite';
 import { defineConfig, loadEnv } from 'vite';
 
 import pkg from './package.json' with { type: 'json' };
@@ -15,6 +17,9 @@ export default defineConfig(({ mode }) => {
     define: { __NEXO_REMOTES__: JSON.stringify(entries) },
     plugins: [
       react(),
+      tailwindcss(),
+      // Serve o service worker usado no modo de dados simulados (VITE_TMDB_MOCK).
+      msw({ mode: 'worker-only' }),
       federation({
         name: 'shell',
         // Remotes são registrados em runtime (src/remotes/remote-loader.ts) para
