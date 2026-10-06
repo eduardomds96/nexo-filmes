@@ -1,0 +1,22 @@
+{
+  "name": "@nexo/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@types/react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@nexo/config": "workspace:*",
+    "@types/react": "^19.3.0"
+  }
+}
