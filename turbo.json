@@ -1,6 +1,7 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "ui": "stream",
+  "agentGuidance": false,
   "globalEnv": ["TMDB_TOKEN", "VITE_*"],
   "globalDependencies": [".env"],
   "tasks": {
