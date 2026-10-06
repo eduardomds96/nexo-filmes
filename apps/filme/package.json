@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "5.9.1",
     "@nexo/tmdb": "workspace:*",
     "@nexo/ui": "workspace:*",
     "@nexo/user-data": "workspace:*",
@@ -17,13 +18,16 @@
     "lucide-react": "1.52.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "react-hook-form": "7.89.0",
     "react-router": "8.4.0",
-    "sonner": "2.0.8"
+    "sonner": "2.0.8",
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "@module-federation/vite": "1.23.2",
     "@nexo/config": "workspace:*",
     "@nexo/contracts": "workspace:*",
+    "@nexo/testing": "workspace:*",
     "@tailwindcss/vite": "4.3.3",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/react": "^16.3.3",

@@ -5,7 +5,7 @@ import { http, HttpResponse } from 'msw';
 import { describe, expect, it, vi } from 'vitest';
 
 import { server } from '../test/server';
-import { renderRoute } from '../test/render';
+import { renderRoute } from '@nexo/testing';
 import { CatalogScreen } from './CatalogScreen';
 
 const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));

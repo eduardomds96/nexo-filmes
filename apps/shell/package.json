@@ -26,6 +26,7 @@
     "@module-federation/vite": "1.23.2",
     "@nexo/config": "workspace:*",
     "@nexo/contracts": "workspace:*",
+    "@nexo/testing": "workspace:*",
     "@tailwindcss/vite": "4.3.3",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/react": "^16.3.3",

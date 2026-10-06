@@ -16,6 +16,8 @@ interface RenderOptions {
   readonly repository?: Partial<LocalRepositoryOptions>;
 }
 
+/** Utilitários de teste compartilhados pelos micro-frontends (nunca usados em produção). */
+
 /** Renderiza uma página do remote com o que o Shell forneceria: roteador, QueryClient e store. */
 export function renderRoute(
   element: ReactElement,
