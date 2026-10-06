@@ -9,4 +9,6 @@ export const sharedTestOptions = {
   clearMocks: true,
   unstubEnvs: true,
   unstubGlobals: true,
+  // Folga para máquinas lentas e para a execução com cobertura.
+  testTimeout: 15_000,
 };

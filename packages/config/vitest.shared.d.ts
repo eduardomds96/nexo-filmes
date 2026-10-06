@@ -3,4 +3,5 @@ export declare const sharedTestOptions: {
   clearMocks: true;
   unstubEnvs: true;
   unstubGlobals: true;
+  testTimeout: number;
 };
