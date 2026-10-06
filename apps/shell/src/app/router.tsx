@@ -1,62 +1,39 @@
 import { createBrowserRouter, Navigate } from 'react-router';
+import type { RouteObject } from 'react-router';
 
 import { RootLayout } from '../layout/RootLayout';
 import { NotFoundPage } from '../pages/NotFoundPage';
-import { RemoteBoundary } from '../remotes/RemoteBoundary';
-import { RemoteErrorPanel } from '../remotes/RemoteErrorPanel';
+import { RouteErrorPage } from '../pages/RouteErrorPage';
+import { RemoteRoute } from '../remotes/RemoteRoute';
 
-const loading = <p>Carregando…</p>;
-
-export const router = createBrowserRouter([
+/** Rotas de topo. O Shell é dono delas; cada remote só fornece o componente da página. */
+export const routes: RouteObject[] = [
   {
     element: <RootLayout />,
+    errorElement: <RouteErrorPage />,
     children: [
       { index: true, element: <Navigate to="/filmes" replace /> },
       {
         path: 'filmes',
-        element: (
-          <RemoteBoundary
-            id="catalogo/CatalogPage"
-            renderError={RemoteErrorPanel}
-            areaLabel="o catálogo"
-            fallback={loading}
-          />
-        ),
+        element: <RemoteRoute id="catalogo/CatalogPage" areaLabel="o catálogo" />,
       },
       {
         path: 'filme/:id',
-        element: (
-          <RemoteBoundary
-            id="filme/MoviePage"
-            renderError={RemoteErrorPanel}
-            areaLabel="o detalhe do filme"
-            fallback={loading}
-          />
-        ),
+        element: <RemoteRoute id="filme/MoviePage" areaLabel="o detalhe do filme" />,
       },
       {
         path: 'favoritos',
-        element: (
-          <RemoteBoundary
-            id="minha_area/FavoritesPage"
-            renderError={RemoteErrorPanel}
-            areaLabel="seus favoritos"
-            fallback={loading}
-          />
-        ),
+        element: <RemoteRoute id="minha_area/FavoritesPage" areaLabel="seus favoritos" />,
       },
       {
         path: 'painel',
-        element: (
-          <RemoteBoundary
-            id="minha_area/DashboardPage"
-            renderError={RemoteErrorPanel}
-            areaLabel="o painel"
-            fallback={loading}
-          />
-        ),
+        element: <RemoteRoute id="minha_area/DashboardPage" areaLabel="o painel" />,
       },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
-]);
+];
+
+export function createAppRouter() {
+  return createBrowserRouter(routes);
+}

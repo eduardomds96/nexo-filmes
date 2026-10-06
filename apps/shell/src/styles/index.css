@@ -1,0 +1,11 @@
+/*
+ * CSS do Shell: o único lugar que carrega preflight, tokens e estilos de base.
+ * Cada remote gera só os utilitários que usa (ver docs/adr/0004).
+ */
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@nexo/ui/styles/theme.css';
+@import '@nexo/ui/styles/tokens.css';
+@import '@nexo/ui/styles/base.css';
+
+@source '../../../../packages/ui/src';

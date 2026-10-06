@@ -3,7 +3,7 @@ import { Suspense, use, useState } from 'react';
 import type { ComponentType, ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { evictRemoteModule, getRemoteModule } from './remote-loader';
+import { evictRemoteModule, getRemoteModule, remoteNameOf } from './remote-loader';
 
 type PropsOf<Id extends RemoteModuleId> =
   RemoteModuleMap[Id] extends ComponentType<infer P> ? P : never;
@@ -62,7 +62,10 @@ export function RemoteBoundary<Id extends RemoteModuleId>({
       }
     >
       <Suspense fallback={fallback}>
-        <RemoteContent id={id} props={props} />
+        {/* Os utilitários CSS do remote valem só dentro deste contêiner (ADR 0004). */}
+        <div data-nexo-remote={remoteNameOf(id)} className="contents">
+          <RemoteContent id={id} props={props} />
+        </div>
       </Suspense>
     </ErrorBoundary>
   );
