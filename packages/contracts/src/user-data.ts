@@ -22,12 +22,19 @@ export interface Rating {
   readonly comment: string;
   readonly createdAt: string;
   readonly updatedAt: string;
+  /**
+   * Cópia mínima do filme avaliado, para listar avaliações sem depender da
+   * TMDB. `null` em avaliações gravadas antes de o snapshot existir.
+   */
+  readonly movie: MovieSnapshot | null;
 }
 
 export interface RatingInput {
   readonly movieId: number;
   readonly score: number;
   readonly comment?: string;
+  /** Snapshot do filme. Sem ele, a avaliação mantém o snapshot que já tinha. */
+  readonly movie?: MovieSnapshot;
 }
 
 /** Repositório assíncrono que simula um back-end para os dados do usuário. */

@@ -3,7 +3,14 @@
  * por URL: estes tipos garantem que todos montem os mesmos caminhos.
  */
 export type AppRoute =
-  '/' | '/filmes' | `/filmes?${string}` | `/filme/${number}` | '/favoritos' | '/painel';
+  | '/'
+  | '/filmes'
+  | `/filmes?${string}`
+  | `/filme/${number}`
+  | '/favoritos'
+  | '/avaliacoes'
+  | `/avaliacoes?${string}`
+  | '/painel';
 
 /** Query string do catálogo (`/filmes?q=&genero=&pagina=`). */
 export interface CatalogSearchParams {

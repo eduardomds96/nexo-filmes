@@ -12,6 +12,7 @@ export interface RemoteModuleMap {
   'filme/MoviePage': ComponentType;
   'minha_area/FavoritesPage': ComponentType;
   'minha_area/DashboardPage': ComponentType;
+  'minha_area/RatingsPage': ComponentType;
   'minha_area/FavoritesCounter': ComponentType<FavoritesCounterProps>;
 }
 
