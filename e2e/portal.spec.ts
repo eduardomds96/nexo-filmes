@@ -160,17 +160,21 @@ test.describe('catálogo', () => {
 test.describe('avaliação', () => {
   test('mensagens por campo, foco no primeiro inválido e valores preservados', async ({ page }) => {
     await page.goto('/filme/603');
-    const score = page.getByLabel('Nota');
+    const score = page.getByRole('radiogroup', { name: 'Nota' });
     const comment = page.getByLabel(/Comentário/);
     await comment.fill('x'.repeat(501));
     await page.getByRole('button', { name: 'Salvar avaliação' }).click();
 
     await expect(page.getByText('Escolha uma nota.')).toBeVisible();
     await expect(page.getByText('O comentário pode ter no máximo 500 caracteres.')).toBeVisible();
-    await expect(score).toBeFocused();
+    // Sem nota, o foco vai para o rádio que recebe Tab no grupo de estrelas (o primeiro).
+    await expect(score.getByRole('radio', { name: '0,5 de 10' })).toBeFocused();
     await expect(comment).toHaveValue('x'.repeat(501));
 
-    await score.fill('8,5');
+    // Pelo teclado: End vai a 10; três setas para a esquerda, a 8,5.
+    await page.keyboard.press('End');
+    for (let i = 0; i < 3; i++) await page.keyboard.press('ArrowLeft');
+    await expect(score.getByRole('radio', { name: '8,5 de 10' })).toBeChecked();
     await comment.fill('Muito bom');
     await page.getByRole('button', { name: 'Salvar avaliação' }).click();
     await expect(page.getByRole('button', { name: 'Atualizar avaliação' })).toBeVisible();
@@ -182,7 +186,9 @@ test.describe('avaliação', () => {
     await expect(page.getByText('Muito bom')).toBeVisible();
     await page.getByRole('link', { name: 'Editar avaliação de Matrix' }).click();
     await expect(page).toHaveURL(/\/filme\/603#avaliacao$/);
-    await expect(page.getByLabel('Nota')).toBeFocused();
+    await expect(
+      page.getByRole('radiogroup', { name: 'Nota' }).getByRole('radio', { name: '8,5 de 10' }),
+    ).toBeFocused();
 
     await page
       .getByRole('navigation', { name: 'Principal' })

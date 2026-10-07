@@ -21,6 +21,8 @@ export { ScoreRing } from './components/score-ring';
 export type { ScoreRingProps } from './components/score-ring';
 export type { PaginationLinkProps, PaginationProps } from './components/pagination';
 export { Badge, Card, Separator, Skeleton, Spinner, VisuallyHidden } from './components/primitives';
+export { StarRatingInput } from './components/star-rating-input';
+export type { StarRatingInputHandle, StarRatingInputProps } from './components/star-rating-input';
 export { EmptyState, ErrorState } from './components/states';
 export { Toaster } from './components/toaster';
 export {

@@ -5,21 +5,24 @@ import {
   FieldError,
   FieldHint,
   formatUserScore,
-  Input,
   Label,
   Spinner,
+  StarRatingInput,
   Textarea,
   cn,
 } from '@nexo/ui';
 import { RATING_COMMENT_MAX_LENGTH, useRating, useUserDataStore } from '@nexo/user-data';
 import { ListChecks } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
+import type { FieldErrors } from 'react-hook-form';
 import { Link, useLocation } from 'react-router';
 import { toast } from 'sonner';
 
-import { ratingFormSchema, ratingToFormValues } from '../domain/rating-form';
+import { parseScore, ratingFormSchema, ratingToFormValues } from '../domain/rating-form';
 import type { RatingFormInput, RatingFormOutput } from '../domain/rating-form';
+
+const FIELD_ORDER = ['score', 'comment'] as const;
 
 type SaveStatus = 'idle' | 'saving' | 'saved' | 'failed' | 'deleted';
 
@@ -49,7 +52,8 @@ export function RatingForm({ movie }: { movie: MovieSnapshot }) {
     // usuário já começou a digitar.
     values: ratingToFormValues(rating),
     resetOptions: { keepDirtyValues: true },
-    shouldFocusError: true,
+    // O foco no primeiro erro segue a ordem visual dos campos (ver onInvalid).
+    shouldFocusError: false,
   });
 
   // Vindo de "Editar avaliação" (`#avaliacao`): rola até o formulário e foca a nota.
@@ -62,6 +66,12 @@ export function RatingForm({ movie }: { movie: MovieSnapshot }) {
   const saving = isSubmitting || status === 'saving';
   const commentLength = useWatch({ control, name: 'comment' }).length;
   const overLimit = commentLength > RATING_COMMENT_MAX_LENGTH;
+
+  // Foco no primeiro campo inválido, na ordem em que aparecem (nota, depois comentário).
+  const onInvalid = (invalid: FieldErrors<RatingFormInput>) => {
+    const first = FIELD_ORDER.find((name) => invalid[name]);
+    if (first) setFocus(first);
+  };
 
   const onSubmit = handleSubmit(async (values) => {
     setStatus('saving');
@@ -82,7 +92,7 @@ export function RatingForm({ movie }: { movie: MovieSnapshot }) {
         description: 'Seus dados continuam no formulário. Tente novamente.',
       });
     }
-  });
+  }, onInvalid);
 
   const onDelete = async () => {
     setDeleting(true);
@@ -152,19 +162,32 @@ export function RatingForm({ movie }: { movie: MovieSnapshot }) {
         className="flex flex-col gap-4"
       >
         <div className="flex flex-col gap-2">
-          <Label htmlFor="nota">Nota</Label>
-          <Input
-            id="nota"
-            inputMode="decimal"
-            autoComplete="off"
-            placeholder="Ex.: 7,5"
-            className="max-w-40"
-            aria-invalid={errors.score ? true : undefined}
-            aria-describedby={errors.score ? 'nota-erro nota-dica' : 'nota-dica'}
-            aria-required="true"
-            {...register('score')}
+          <Label id="nota-rotulo">Nota</Label>
+          <Controller
+            control={control}
+            name="score"
+            render={({ field }) => {
+              const score = parseScore(field.value);
+              return (
+                <StarRatingInput
+                  ref={field.ref}
+                  id="nota"
+                  value={Number.isNaN(score) ? null : score}
+                  onChange={(next) => {
+                    field.onChange(formatUserScore(next));
+                  }}
+                  onBlur={field.onBlur}
+                  aria-labelledby="nota-rotulo"
+                  aria-invalid={errors.score ? true : undefined}
+                  aria-describedby={errors.score ? 'nota-erro nota-dica' : 'nota-dica'}
+                  aria-required
+                />
+              );
+            }}
           />
-          <FieldHint id="nota-dica">De 0,5 a 10, em passos de 0,5.</FieldHint>
+          <FieldHint id="nota-dica">
+            De 0,5 a 10, com meia estrela. Use as setas do teclado para ajustar.
+          </FieldHint>
           <FieldError id="nota-erro">{errors.score?.message}</FieldError>
         </div>
 

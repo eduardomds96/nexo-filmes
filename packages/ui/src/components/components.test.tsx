@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -7,6 +7,7 @@ import { FavoriteButton } from './favorite-button';
 import { MoviePoster } from './movie-poster';
 import { PageHeading } from './page-heading';
 import { visiblePages } from './pagination';
+import { StarRatingInput } from './star-rating-input';
 
 afterEach(() => {
   cleanup();
@@ -126,5 +127,46 @@ describe('visiblePages', () => {
     expect(visiblePages(5, 10)).toEqual([1, null, 4, 5, 6, null, 10]);
     expect(visiblePages(10, 10)).toEqual([1, null, 9, 10]);
     expect(visiblePages(3, 5)).toEqual([1, 2, 3, 4, 5]);
+  });
+});
+
+describe('StarRatingInput', () => {
+  function Controlled({ initial = null }: { initial?: number | null }) {
+    const [value, setValue] = useState<number | null>(initial);
+    return (
+      <>
+        <span id="rotulo">Nota</span>
+        <StarRatingInput value={value} onChange={setValue} aria-labelledby="rotulo" />
+      </>
+    );
+  }
+
+  it('tem 20 rádios de meia estrela, de 0,5 a 10, e só um recebe Tab', () => {
+    render(<Controlled initial={7.5} />);
+    const group = screen.getByRole('radiogroup', { name: 'Nota' });
+    const radios = within(group).getAllByRole('radio');
+    expect(radios).toHaveLength(20);
+    expect(radios[0]?.getAttribute('aria-label')).toBe('0,5 de 10');
+    expect(radios[19]?.getAttribute('aria-label')).toBe('10 de 10');
+    const checked = screen.getByRole('radio', { checked: true });
+    expect(checked.getAttribute('aria-label')).toBe('7,5 de 10');
+    expect(radios.filter((r) => r.tabIndex === 0)).toEqual([checked]);
+  });
+
+  it('clicar numa metade escolhe a nota; as setas não passam dos limites', async () => {
+    const user = userEvent.setup();
+    render(<Controlled />);
+    await user.click(screen.getByRole('radio', { name: '3,5 de 10' }));
+    expect(screen.getByRole('radio', { checked: true }).getAttribute('aria-label')).toBe(
+      '3,5 de 10',
+    );
+    await user.keyboard('{Home}{ArrowLeft}');
+    expect(screen.getByRole('radio', { checked: true }).getAttribute('aria-label')).toBe(
+      '0,5 de 10',
+    );
+    await user.keyboard('{End}{ArrowRight}');
+    expect(screen.getByRole('radio', { checked: true }).getAttribute('aria-label')).toBe(
+      '10 de 10',
+    );
   });
 });

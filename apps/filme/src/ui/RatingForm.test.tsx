@@ -27,7 +27,11 @@ function renderForm(movieId = 550, options = {}, hashEntry = '/') {
   });
   return {
     ...utils,
-    score: () => screen.getByLabelText<HTMLInputElement>('Nota'),
+    score: () => screen.getByRole('radiogroup', { name: 'Nota' }),
+    checkedScore: () =>
+      screen.queryByRole('radio', { checked: true })?.getAttribute('aria-label') ?? null,
+    choose: (user: ReturnType<typeof userEvent.setup>, value: string) =>
+      user.click(screen.getByRole('radio', { name: `${value} de 10` })),
     comment: () => screen.getByLabelText<HTMLTextAreaElement>(/Comentário/),
     submit: () => screen.getByRole('button', { name: /avaliação$/ }),
   };
@@ -45,31 +49,54 @@ describe('RatingForm', () => {
 
     expect(await screen.findByText(ratingMessages.scoreRequired)).toBeDefined();
     expect(screen.getByText(ratingMessages.commentTooLong)).toBeDefined();
-    expect(document.activeElement).toBe(score());
+    // O foco vai para o rádio que recebe Tab no grupo de estrelas (sem nota, o primeiro).
+    expect(document.activeElement).toBe(screen.getByRole('radio', { name: '0,5 de 10' }));
+    expect(score().contains(document.activeElement)).toBe(true);
     expect(score().getAttribute('aria-invalid')).toBe('true');
     expect(comment().value).toBe(longComment);
   });
 
-  it('com só o comentário inválido, o foco vai para o comentário', async () => {
+  it('com só o comentário inválido, o foco vai para o comentário e a nota fica', async () => {
     const user = userEvent.setup();
-    const { score, comment, submit } = renderForm();
+    const { comment, submit, choose, checkedScore } = renderForm();
 
-    await user.type(score(), '7,3');
+    await choose(user, '8');
     await user.click(comment());
     await user.paste('b'.repeat(501));
     await user.click(submit());
 
-    expect(await screen.findByText(ratingMessages.scoreStep)).toBeDefined();
-    // A nota também é inválida (passo), então ela continua sendo a primeira.
-    expect(document.activeElement).toBe(score());
-
-    await user.clear(score());
-    await user.type(score(), '8');
-    await user.click(submit());
+    expect(await screen.findByText(ratingMessages.commentTooLong)).toBeDefined();
     await waitFor(() => {
       expect(document.activeElement).toBe(comment());
     });
-    expect(score().value).toBe('8');
+    expect(checkedScore()).toBe('8 de 10');
+  });
+
+  it('escolhe a nota pelo teclado, em meias estrelas', async () => {
+    const user = userEvent.setup();
+    const { store, submit, checkedScore } = renderForm();
+    const first = screen.getByRole('radio', { name: '0,5 de 10' });
+
+    // Só um rádio do grupo recebe Tab.
+    expect(screen.getAllByRole('radio').filter((r) => r.tabIndex === 0)).toEqual([first]);
+    first.focus();
+    await user.keyboard('{ArrowRight}');
+    expect(checkedScore()).toBe('0,5 de 10');
+    await user.keyboard('{ArrowRight}{ArrowRight}{ArrowUp}');
+    expect(checkedScore()).toBe('2 de 10');
+    expect(document.activeElement).toBe(screen.getByRole('radio', { name: '2 de 10' }));
+    await user.keyboard('{End}');
+    expect(checkedScore()).toBe('10 de 10');
+    await user.keyboard('{ArrowRight}{ArrowLeft}{ArrowDown}');
+    expect(checkedScore()).toBe('9 de 10');
+    await user.keyboard('{Home}');
+    expect(checkedScore()).toBe('0,5 de 10');
+    await user.keyboard('{End}{ArrowLeft}');
+
+    await user.click(submit());
+    await waitFor(() => {
+      expect(store.getState().ratings.get(550)?.score).toBe(9.5);
+    });
   });
 
   it('mostra o contador de caracteres do comentário', async () => {
@@ -82,9 +109,9 @@ describe('RatingForm', () => {
 
   it('salva a avaliação e, ao salvar de novo, substitui a anterior', async () => {
     const user = userEvent.setup();
-    const { store, score, comment, submit } = renderForm();
+    const { store, comment, submit, choose } = renderForm();
 
-    await user.type(score(), '7,5');
+    await choose(user, '7,5');
     await user.type(comment(), 'Muito bom');
     await user.click(submit());
 
@@ -94,8 +121,7 @@ describe('RatingForm', () => {
     expect(await screen.findByRole('button', { name: 'Atualizar avaliação' })).toBeDefined();
     expect(screen.getByText(/Você deu nota/).textContent).toContain('7,5');
 
-    await user.clear(score());
-    await user.type(score(), '9');
+    await choose(user, '9');
     await user.click(screen.getByRole('button', { name: 'Atualizar avaliação' }));
 
     await waitFor(() => {
@@ -106,27 +132,27 @@ describe('RatingForm', () => {
   });
 
   it('preenche o formulário com a avaliação já salva', async () => {
-    const { store, score, comment } = renderForm();
+    const { store, comment, checkedScore } = renderForm();
     await store.saveRating({ movieId: 550, score: 6, comment: 'Revi' });
     await waitFor(() => {
-      expect(score().value).toBe('6');
+      expect(checkedScore()).toBe('6 de 10');
     });
     expect(comment().value).toBe('Revi');
   });
 
   it('quando o salvamento falha, avisa e mantém os dados digitados', async () => {
     const user = userEvent.setup();
-    const { store, score, comment, submit } = renderForm(13, {
+    const { store, comment, submit, choose, checkedScore } = renderForm(13, {
       repository: { shouldFail: (id: number) => String(id).endsWith('13') },
     });
 
-    await user.type(score(), '4');
+    await choose(user, '4');
     await user.type(comment(), 'Não gostei');
     await user.click(submit());
 
     expect(await screen.findByText(/Seus dados continuam no formulário/)).toBeDefined();
     expect(toastError).toHaveBeenCalled();
-    expect(score().value).toBe('4');
+    expect(checkedScore()).toBe('4 de 10');
     expect(comment().value).toBe('Não gostei');
     expect(store.getState().ratings.size).toBe(0);
   });
@@ -146,8 +172,8 @@ describe('RatingForm', () => {
 
   it('salva o snapshot do filme junto da avaliação', async () => {
     const user = userEvent.setup();
-    const { store, score, submit } = renderForm();
-    await user.type(score(), '8');
+    const { store, submit, choose } = renderForm();
+    await choose(user, '8');
     await user.click(submit());
     await waitFor(() => {
       expect(store.getState().ratings.get(550)?.movie).toMatchObject({
@@ -165,10 +191,10 @@ describe('RatingForm', () => {
     ).toBe('/avaliacoes');
   });
 
-  it('vindo de #avaliacao, foca o campo de nota', async () => {
+  it('vindo de #avaliacao, foca o grupo de estrelas da nota', async () => {
     const { score } = renderForm(550, {}, '/#avaliacao');
     await waitFor(() => {
-      expect(document.activeElement).toBe(score());
+      expect(score().contains(document.activeElement)).toBe(true);
     });
   });
 });
