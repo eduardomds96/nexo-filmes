@@ -236,18 +236,25 @@ Outros pontos e trade-offs:
 - **Retry real de remote.** O Chrome memoriza um `import()` que falhou; a
   nova tentativa registra o remote com `?tentativa=N` para buscar o
   `remoteEntry.js` de novo (ADR 0002).
-- **Tema.** Claro e escuro com tokens CSS. A preferência é guardada por
-  `@nexo/user-data`, já que só ele pode usar o localStorage.
+- **Tema.** Escuro por padrão (independente do sistema), claro opcional pelo
+  botão do cabeçalho. Tokens em OKLCH com um destaque único (âmbar), fontes
+  Bricolage Grotesque (títulos) e Geist (corpo) hospedadas com o app. A
+  preferência é guardada por `@nexo/user-data`, já que só ele pode usar o
+  localStorage.
+- **Movimento.** Microinterações (coração, contador, View Transitions entre
+  lista e detalhe, fade-in de imagens) respeitam `prefers-reduced-motion`.
 
 ## Acessibilidade e responsividade
 
 Verificado manualmente no Chrome e automatizado no E2E:
 
 - Em **360 px** nenhuma das cinco telas tem rolagem horizontal. O catálogo e
-  os favoritos usam duas colunas, e o cabeçalho quebra a navegação em uma
-  segunda linha.
+  os favoritos usam duas colunas, e até 640 px a navegação principal fica
+  numa barra inferior.
 - **Só teclado:** o primeiro Tab leva ao link "Pular para o conteúdo"; a
-  ordem segue busca, gênero e cards (favoritar, depois o título); a
+  ordem segue busca, gênero (chips num grupo de rádios, trocados pelas setas)
+  e cards (título, depois favoritar); a nota da avaliação é um grupo de
+  estrelas com meia estrela, também operado pelas setas; a
   navegação move o foco para o `h1` e atualiza `document.title`; ao remover
   um favorito, o foco vai para o resumo da lista; ao trocar de página, para o
   início dos resultados.
