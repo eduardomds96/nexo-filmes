@@ -27,6 +27,8 @@ export function CatalogMovieCard({ movie, eager }: { movie: Movie; eager: boolea
       eagerPoster={eager}
       action={
         <FavoriteButton
+          tone="onImage"
+          className="size-9 rounded-full"
           title={movie.title}
           isFavorite={favorite.isFavorite}
           isPending={favorite.isPending}

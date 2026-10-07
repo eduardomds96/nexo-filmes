@@ -62,6 +62,8 @@ function FavoriteCard({
       LinkComponent={RouterLink}
       action={
         <FavoriteButton
+          tone="onImage"
+          className="size-9 rounded-full"
           title={movie.title}
           isFavorite={favorite.isFavorite}
           isPending={favorite.isPending}

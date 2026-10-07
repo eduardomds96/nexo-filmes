@@ -136,12 +136,12 @@ test.describe('catálogo', () => {
       '2 filmes encontrados.',
     );
 
-    await page.getByLabel('Gênero', { exact: true }).selectOption({ label: 'Fantasia' });
+    await page.getByRole('radio', { name: 'Fantasia' }).check();
     await expect(page).toHaveURL(/q=senhor&genero=14/);
 
     await page.reload();
     await expect(page.getByLabel('Buscar por título')).toHaveValue('senhor');
-    await expect(page.getByLabel('Gênero', { exact: true })).toHaveValue('14');
+    await expect(page.getByRole('radio', { name: 'Fantasia' })).toBeChecked();
     await expect(page.getByText(/não filtra por gênero/)).toBeVisible();
   });
 

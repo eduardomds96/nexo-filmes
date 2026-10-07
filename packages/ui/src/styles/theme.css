@@ -5,6 +5,24 @@
  * mini-shells de desenvolvimento).
  */
 @custom-variant dark (&:where(.dark, .dark *));
+/* Só em aparelhos com mouse: em telas de toque, nada fica escondido atrás de um hover. */
+@custom-variant can-hover (@media (hover: hover) and (pointer: fine));
+
+/*
+ * Conteúdo sobre imagem com véu (cards, hero): os tokens de texto passam a
+ * valer para fundo escuro nos dois temas, então componentes comuns (Badge,
+ * TmdbScore...) ficam legíveis sem variantes próprias.
+ */
+@utility on-image {
+  --foreground: var(--on-scrim);
+  --muted-foreground: var(--on-scrim-muted);
+  --secondary: oklch(1 0 0 / 0.14);
+  --secondary-foreground: var(--on-scrim);
+  --highlight: var(--primary);
+  --rating: var(--primary);
+  --favorite: var(--primary);
+  color: var(--on-scrim);
+}
 
 @theme inline {
   --font-sans:

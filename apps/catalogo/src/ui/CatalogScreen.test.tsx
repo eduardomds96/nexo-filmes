@@ -47,7 +47,7 @@ describe('CatalogScreen', () => {
 
     expect(screen.getByLabelText<HTMLInputElement>('Buscar por título').value).toBe('matrix');
     await waitFor(() => {
-      expect(screen.getByLabelText<HTMLSelectElement>('Gênero').value).toBe('28');
+      expect(screen.getByRole<HTMLInputElement>('radio', { name: 'Ação' }).checked).toBe(true);
     });
     await waitFor(() => {
       expect(searches).toHaveLength(1);
@@ -71,9 +71,28 @@ describe('CatalogScreen', () => {
     const { search } = renderCatalog('/filmes?pagina=3');
     await screen.findByText('200 filmes encontrados.');
 
-    await user.selectOptions(screen.getByLabelText('Gênero'), 'Drama');
+    const genres = screen.getByRole('group', { name: 'Gênero' });
+    expect(within(genres).getByRole<HTMLInputElement>('radio', { name: 'Todos' }).checked).toBe(
+      true,
+    );
+    await user.click(within(genres).getByRole('radio', { name: 'Drama' }));
 
     expect(search()).toEqual({ genero: '18' });
+  });
+
+  it('mostra a dica de tamanho mínimo só enquanto a busca é curta demais', async () => {
+    const user = userEvent.setup();
+    renderCatalog();
+    await screen.findByText('200 filmes encontrados.');
+    const hint = screen.getByText('A busca começa a partir de 2 letras.');
+    const input = screen.getByLabelText('Buscar por título');
+    expect(input.getAttribute('aria-describedby')).toBe(hint.id);
+    expect(hint.className).toContain('sr-only');
+
+    await user.type(input, 'm');
+    expect(hint.className).not.toContain('sr-only');
+    await user.type(input, 'a');
+    expect(hint.className).toContain('sr-only');
   });
 
   it('não faz uma requisição por tecla: busca o termo completo depois da pausa', async () => {

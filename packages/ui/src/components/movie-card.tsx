@@ -4,7 +4,7 @@ import type { ComponentType, ReactNode } from 'react';
 import { formatScore } from '../lib/format';
 import { cn } from '../lib/utils';
 import { MoviePoster } from './movie-poster';
-import { Card, Skeleton } from './primitives';
+import { Skeleton } from './primitives';
 
 export interface MovieCardLinkProps {
   readonly to: string;
@@ -26,8 +26,11 @@ export interface MovieCardProps {
 }
 
 /**
- * Card de filme. O título é o link; um pseudo-elemento estende a área
- * clicável para o card todo, sem aninhar o botão de ação dentro do link.
+ * Card de filme em pôster 2:3. O título é o link; um pseudo-elemento estende
+ * a área clicável para o card todo, sem aninhar o botão de ação no link.
+ * Nota e gêneros (`details`) aparecem sobre o pôster no hover ou foco; em
+ * telas de toque ficam sempre visíveis. Continuam no DOM nos dois casos, então
+ * leitores de tela sempre os leem.
  */
 export function MovieCard({
   title,
@@ -40,24 +43,33 @@ export function MovieCard({
   eagerPoster = false,
 }: MovieCardProps) {
   return (
-    <Card className="group relative h-full gap-3 p-3 transition-shadow focus-within:shadow-md hover:shadow-md">
-      <div className="relative">
-        <MoviePoster src={posterUrl} title={title} eager={eagerPoster} />
+    <article className="group relative flex h-full flex-col gap-2.5">
+      <div className="relative overflow-hidden rounded-xl bg-muted shadow-sm ring-1 ring-border/60 transition-[translate,box-shadow] duration-300 ease-out-soft group-focus-within:shadow-glow can-hover:group-hover:-translate-y-1 can-hover:group-hover:shadow-glow">
+        <MoviePoster
+          src={posterUrl}
+          title={title}
+          eager={eagerPoster}
+          className="rounded-none transition-transform duration-500 ease-out-soft can-hover:group-hover:scale-[1.04]"
+        />
+        {details && (
+          <div className="on-image absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-linear-to-t from-scrim via-scrim/85 to-transparent p-3 pt-12 transition-[opacity,translate] duration-300 ease-out-soft can-hover:translate-y-2 can-hover:opacity-0 can-hover:group-hover:translate-y-0 can-hover:group-hover:opacity-100 can-hover:group-focus-within:translate-y-0 can-hover:group-focus-within:opacity-100">
+            {details}
+          </div>
+        )}
         {action && <div className="absolute top-2 right-2 z-10">{action}</div>}
       </div>
-      <div className="flex flex-1 flex-col gap-1.5">
-        <h3 className="leading-snug font-semibold">
+      <div className="flex flex-col gap-0.5 px-0.5">
+        <h3 className="line-clamp-2 leading-snug font-semibold">
           <LinkComponent
             to={href}
-            className="rounded-sm outline-none after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-ring hover:underline"
+            className="rounded-sm outline-none after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-ring focus-visible:after:ring-offset-2 focus-visible:after:ring-offset-background hover:underline"
           >
             {title}
           </LinkComponent>
         </h3>
         {year !== null && <p className="text-sm text-muted-foreground tabular-nums">{year}</p>}
-        {details}
       </div>
-    </Card>
+    </article>
   );
 }
 
@@ -73,12 +85,11 @@ export function TmdbScore({ value, className }: { value: number; className?: str
 
 export function MovieCardSkeleton() {
   return (
-    <Card className="gap-3 p-3">
-      <Skeleton className="aspect-[2/3] w-full rounded-lg" />
+    <div className="flex flex-col gap-2.5">
+      <Skeleton className="aspect-[2/3] w-full rounded-xl" />
       <Skeleton className="h-5 w-4/5" />
       <Skeleton className="h-4 w-1/4" />
-      <Skeleton className="h-4 w-2/5" />
-    </Card>
+    </div>
   );
 }
 
@@ -93,7 +104,7 @@ export function MovieGrid({
   return (
     <ul
       className={cn(
-        'grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5',
+        'grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 sm:gap-x-5 sm:gap-y-8 lg:grid-cols-4 xl:grid-cols-5',
         className,
       )}
     >
