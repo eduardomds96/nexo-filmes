@@ -114,6 +114,7 @@ describe('conversões', () => {
         year: 2000,
         posterUrl: 'https://img/w500/p.jpg',
         posterThumbUrl: 'https://img/w342/p.jpg',
+        backdropUrl: 'https://img/w1280/b.jpg',
         voteAverage: 7,
         voteCount: 1,
         runtimeMinutes: 100,

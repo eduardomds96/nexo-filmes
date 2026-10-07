@@ -61,6 +61,7 @@ export const movieDetailsDtoSchema = z.object({
   title: z.string().min(1),
   release_date: nullableString,
   poster_path: nullableString,
+  backdrop_path: nullableString,
   vote_average: z.number().nullish(),
   vote_count: z.number().nullish(),
   runtime: z.number().nullish(),

@@ -13,6 +13,8 @@ export interface FavoriteButtonProps {
   readonly onToggle: () => void;
   /** `icon` para cards; `full` mostra o texto ao lado do ícone. */
   readonly appearance?: 'icon' | 'full';
+  /** `onImage`: sobre pôster ou imagem de fundo (véu escuro nos dois temas). */
+  readonly tone?: 'surface' | 'onImage';
   readonly className?: string;
 }
 
@@ -36,6 +38,7 @@ export function FavoriteButton({
   isPending,
   onToggle,
   appearance = 'icon',
+  tone = 'surface',
   className,
 }: FavoriteButtonProps) {
   const [lastAction, setLastAction] = useState<LastAction>(null);
@@ -61,7 +64,9 @@ export function FavoriteButton({
             size: appearance === 'icon' ? 'icon' : 'default',
           }),
           'aria-disabled:cursor-progress aria-disabled:opacity-80',
-          isFavorite && 'text-favorite',
+          tone === 'onImage' &&
+            'border-on-scrim/30 bg-scrim/60 text-on-scrim backdrop-blur-sm hover:bg-scrim/80 hover:text-on-scrim',
+          isFavorite && (tone === 'onImage' ? 'text-primary hover:text-primary' : 'text-favorite'),
           className,
         )}
       >

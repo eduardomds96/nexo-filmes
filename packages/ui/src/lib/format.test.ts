@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatRuntime, formatRuntimeLong, formatScore, formatUserScore, plural } from './format';
+import {
+  formatRuntime,
+  formatRuntimeLong,
+  formatScore,
+  formatUserScore,
+  initials,
+  plural,
+} from './format';
 
 describe('formatação pt-BR', () => {
   it('nota com uma casa e vírgula', () => {
@@ -21,6 +28,14 @@ describe('formatação pt-BR', () => {
     expect(formatRuntimeLong(61)).toBe('1 hora e 1 minuto');
     expect(formatRuntimeLong(139)).toBe('2 horas e 19 minutos');
     expect(formatRuntimeLong(0)).toBe('0 minutos');
+  });
+
+  it('iniciais da primeira e da última palavra', () => {
+    expect(initials('Edward Norton')).toBe('EN');
+    expect(initials('  Fernanda   Montenegro Torres ')).toBe('FT');
+    expect(initials('Zendaya')).toBe('Z');
+    expect(initials('ângela leal')).toBe('ÂL');
+    expect(initials('')).toBe('');
   });
 
   it('plural', () => {

@@ -42,3 +42,11 @@ export function formatRuntimeLong(minutes: number): string {
 export function plural(count: number, singular: string, pluralForm: string): string {
   return `${formatCount(count)} ${count === 1 ? singular : pluralForm}`;
 }
+
+/** Iniciais de um nome (primeira e última palavra), para avatares sem foto. */
+export function initials(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+  const first = words[0]?.[0] ?? '';
+  const last = words.length > 1 ? (words.at(-1)?.[0] ?? '') : '';
+  return (first + last).toLocaleUpperCase('pt-BR');
+}

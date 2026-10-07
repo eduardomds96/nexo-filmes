@@ -16,6 +16,8 @@ export { MoviePoster } from './components/movie-poster';
 export type { MoviePosterProps } from './components/movie-poster';
 export { APP_NAME, PageHeading } from './components/page-heading';
 export { Pagination, visiblePages } from './components/pagination';
+export { ScoreRing } from './components/score-ring';
+export type { ScoreRingProps } from './components/score-ring';
 export type { PaginationLinkProps, PaginationProps } from './components/pagination';
 export { Badge, Card, Separator, Skeleton, Spinner, VisuallyHidden } from './components/primitives';
 export { EmptyState, ErrorState } from './components/states';
@@ -26,6 +28,7 @@ export {
   formatRuntimeLong,
   formatScore,
   formatUserScore,
+  initials,
   plural,
 } from './lib/format';
 export { cn } from './lib/utils';

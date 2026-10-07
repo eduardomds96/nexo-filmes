@@ -40,6 +40,42 @@ describe('MovieScreen', () => {
     expect(within(cast).getByText('Tyler Durden')).toBeDefined();
   });
 
+  it('mostra a imagem de fundo no topo e o elenco em carrossel com foto ou iniciais', async () => {
+    server.use(
+      http.get(tmdbUrl('/movie/:id'), () =>
+        HttpResponse.json(
+          movieDetails({
+            id: 550,
+            credits: {
+              cast: [
+                { id: 1, name: 'Edward Norton', character: 'Narrador', profile_path: '/n.jpg' },
+                { id: 2, name: 'Helena Bonham Carter', character: 'Marla', profile_path: null },
+              ],
+              crew: [],
+            },
+          }),
+        ),
+      ),
+    );
+    const { container } = renderMovie('550');
+    await screen.findByRole('heading', { level: 1 });
+
+    const backdrop = container.querySelector('header img[alt=""]');
+    expect(backdrop?.getAttribute('src')).toBe('https://image.tmdb.org/t/p/w1280/backdrop-550.jpg');
+
+    const list = within(screen.getByRole('region', { name: 'Elenco' })).getByRole('list', {
+      name: 'Elenco',
+    });
+    // A lista rola na horizontal e precisa ser alcançável pelo teclado.
+    expect(list.getAttribute('tabindex')).toBe('0');
+    const [norton, helena] = within(list).getAllByRole('listitem');
+    expect(norton?.querySelector('img')?.getAttribute('src')).toBe(
+      'https://image.tmdb.org/t/p/w185/n.jpg',
+    );
+    expect(helena?.querySelector('img')).toBeNull();
+    expect(within(helena!).getByText('HC')).toBeDefined();
+  });
+
   it('sem diretor, sem pôster e sem sinopse mostra textos neutros', async () => {
     server.use(
       http.get(tmdbUrl('/movie/:id'), () =>

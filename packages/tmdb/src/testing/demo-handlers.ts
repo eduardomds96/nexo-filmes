@@ -8,7 +8,7 @@ import {
   DEMO_MOVIES,
   DEMO_RATE_LIMIT_QUERY,
   demoDetails,
-  demoPosterSvg,
+  demoImageSvg,
   normalizeText,
   paginate,
 } from './demo-data';
@@ -23,7 +23,7 @@ function pageParam(url: URL): number {
 /**
  * Handlers que simulam a TMDB com o catálogo de demonstração: busca por
  * título (sem acentos), filtro de gênero no discover, detalhe com créditos,
- * pôsteres SVG e um 429 sob demanda (buscar por "erro429").
+ * pôsteres, fundos e fotos em SVG e um 429 sob demanda (buscar por "erro429").
  */
 export function createDemoHandlers({ latencyMs = 250 }: { latencyMs?: number } = {}) {
   return [
@@ -64,8 +64,7 @@ export function createDemoHandlers({ latencyMs = 250 }: { latencyMs?: number } =
     }),
 
     http.get(`${TMDB_IMAGE_BASE_URL}/:size/demo/:file`, ({ params }) => {
-      const id = Number(String(params['file']).replace('.svg', ''));
-      return new HttpResponse(demoPosterSvg(id), {
+      return new HttpResponse(demoImageSvg(String(params['file'])), {
         headers: { 'Content-Type': 'image/svg+xml', 'Cache-Control': 'max-age=3600' },
       });
     }),

@@ -36,6 +36,8 @@ export interface MovieDetails extends Omit<Movie, 'posterUrl'> {
   readonly posterUrl: string | null;
   /** URL do pôster em tamanho de lista, usada no snapshot de favoritos. */
   readonly posterThumbUrl: string | null;
+  /** URL absoluta da imagem de fundo (paisagem, para o topo do detalhe), ou `null`. */
+  readonly backdropUrl: string | null;
   readonly runtimeMinutes: number | null;
   readonly overview: string;
   readonly tagline: string | null;

@@ -103,6 +103,7 @@ export function toMovieDetails(dto: MovieDetailsDto): MovieDetails {
     year: yearFromDate(dto.release_date),
     posterUrl: tmdbImageUrl(dto.poster_path, 'w500'),
     posterThumbUrl: tmdbImageUrl(dto.poster_path, 'w342'),
+    backdropUrl: tmdbImageUrl(dto.backdrop_path, 'w1280'),
     voteAverage: toVoteAverage(dto.vote_average),
     voteCount: dto.vote_count ?? 0,
     runtimeMinutes: dto.runtime && dto.runtime > 0 ? Math.round(dto.runtime) : null,

@@ -149,6 +149,7 @@ describe('toMovieDetails', () => {
       voteAverage: 8.4,
       posterUrl: 'https://image.tmdb.org/t/p/w500/poster-550.jpg',
       posterThumbUrl: 'https://image.tmdb.org/t/p/w342/poster-550.jpg',
+      backdropUrl: 'https://image.tmdb.org/t/p/w1280/backdrop-550.jpg',
       genres: [{ id: 18, name: 'Drama' }],
       directors: [{ id: 7467, name: 'David Fincher' }],
     });
@@ -196,6 +197,7 @@ describe('toMovieDetails', () => {
       year: null,
       posterUrl: null,
       posterThumbUrl: null,
+      backdropUrl: null,
       voteAverage: 0,
       voteCount: 0,
       runtimeMinutes: null,

@@ -57,6 +57,7 @@ export function movieDetails(overrides: Record<string, unknown> & { id: number }
     title: `Filme ${String(overrides.id)}`,
     release_date: '1999-10-15',
     poster_path: `/poster-${String(overrides.id)}.jpg`,
+    backdrop_path: `/backdrop-${String(overrides.id)}.jpg`,
     vote_average: 8.4,
     vote_count: 25000,
     runtime: 139,
