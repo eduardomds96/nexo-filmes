@@ -11,6 +11,7 @@ import {
   MovieGrid,
   PageHeading,
   plural,
+  PopcornHeartArt,
 } from '@nexo/ui';
 import {
   useFavorite,
@@ -129,11 +130,16 @@ export function FavoritesScreen() {
   } else if (items.length === 0) {
     content = (
       <EmptyState
-        icon={<Heart />}
+        illustration={<PopcornHeartArt />}
         title="Você ainda não tem favoritos"
-        description="Toque no coração de um filme no catálogo para guardá-lo aqui."
+        description={
+          <>
+            Toque no <Heart aria-hidden="true" className="inline size-4 align-[-2px]" /> coração de
+            um filme no catálogo para guardá-lo aqui e montar sua lista para a próxima sessão.
+          </>
+        }
         action={
-          <Button asChild>
+          <Button asChild size="lg">
             <Link to="/filmes">Explorar filmes</Link>
           </Button>
         }

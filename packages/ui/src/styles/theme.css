@@ -90,6 +90,13 @@
   --animate-count-up: count-up 320ms var(--ease-out-soft);
   --animate-count-down: count-down 320ms var(--ease-out-soft);
 
+  --animate-float: float 4s ease-in-out infinite;
+
+  @keyframes float {
+    50% {
+      transform: translateY(-6px);
+    }
+  }
   @keyframes count-up {
     from {
       opacity: 0;

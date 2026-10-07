@@ -183,6 +183,15 @@ describe('DashboardScreen', () => {
     expect(within(list).getByText('7,5')).toBeDefined();
     expect(within(list).getByText('Crime')).toBeDefined();
     expect(within(list).getByText('2 favoritos')).toBeDefined();
+
+    // O gráfico de gêneros traz os mesmos números numa tabela para leitores de tela.
+    const table = screen.getByRole('table', { name: 'Favoritos por gênero' });
+    expect(
+      within(table)
+        .getAllByRole('row')
+        .slice(1)
+        .map((row) => row.textContent),
+    ).toEqual(['Crime2', 'Ação1', 'Drama1']);
   });
 
   it('mostra estado vazio sem favoritos nem avaliações', async () => {

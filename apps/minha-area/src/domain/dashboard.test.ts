@@ -5,6 +5,8 @@ import {
   averageScore,
   computeDashboard,
   formatAverage,
+  genreChartData,
+  genreCounts,
   mostFrequentGenre,
   withUserScores,
 } from './dashboard';
@@ -100,6 +102,33 @@ describe('gênero mais frequente', () => {
   });
 });
 
+describe('gêneros do gráfico', () => {
+  it('conta todos os gêneros, do mais frequente ao menos, com desempate alfabético', () => {
+    expect(
+      genreCounts([
+        favorite(1, ['Drama', 'Crime']),
+        favorite(2, ['Ação', 'Drama', 'Drama']),
+        favorite(3, ['Crime', 'Ação']),
+      ]),
+    ).toEqual([
+      { name: 'Ação', count: 2 },
+      { name: 'Crime', count: 2 },
+      { name: 'Drama', count: 2 },
+    ]);
+    expect(genreCounts([])).toEqual([]);
+  });
+
+  it('mantém os mais frequentes e soma o resto em "Outros"', () => {
+    const counts = [5, 4, 3, 2, 1].map((count, index) => ({ name: `G${String(index)}`, count }));
+    expect(genreChartData(counts, 5)).toEqual(counts);
+    expect(genreChartData(counts, 3)).toEqual([
+      { name: 'G0', count: 5 },
+      { name: 'G1', count: 4 },
+      { name: 'Outros', count: 6 },
+    ]);
+  });
+});
+
 describe('computeDashboard', () => {
   it('reúne totais, média e gênero', () => {
     expect(
@@ -112,6 +141,10 @@ describe('computeDashboard', () => {
       totalRated: 2,
       averageScore: 7.5,
       topGenre: { name: 'Drama', count: 2 },
+      genres: [
+        { name: 'Drama', count: 2 },
+        { name: 'Ação', count: 1 },
+      ],
     });
   });
 });

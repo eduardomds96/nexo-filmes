@@ -10,6 +10,7 @@ export {
   NativeSelect,
   Textarea,
 } from './components/form-controls';
+export { EmptyChartArt, PopcornHeartArt } from './components/illustrations';
 export { MovieCard, MovieCardSkeleton, MovieGrid, TmdbScore } from './components/movie-card';
 export type { MovieCardLinkProps, MovieCardProps } from './components/movie-card';
 export { MoviePoster } from './components/movie-poster';

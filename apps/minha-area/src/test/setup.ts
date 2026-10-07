@@ -3,6 +3,13 @@ import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 
 import { server } from './server';
 
+// jsdom não implementa ResizeObserver (usado pelo container responsivo dos gráficos).
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
 // Consultas assíncronas (findBy*, waitFor) com folga para a execução com cobertura.
 configure({ asyncUtilTimeout: 5000 });
 

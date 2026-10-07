@@ -12,6 +12,8 @@ export interface DashboardStats {
   readonly averageScore: number | null;
   /** Gênero mais frequente entre os favoritos, ou `null` sem favoritos com gênero. */
   readonly topGenre: GenreCount | null;
+  /** Favoritos por gênero, do mais ao menos frequente. */
+  readonly genres: readonly GenreCount[];
 }
 
 const averageFormat = new Intl.NumberFormat('pt-BR', {
@@ -30,31 +32,45 @@ export function averageScore(ratings: readonly Pick<Rating, 'score'>[]): number 
   return sum / ratings.length;
 }
 
+/** Quantos gêneros o gráfico do painel mostra; o resto vira "Outros". */
+export const GENRE_CHART_LIMIT = 6;
+
 /**
- * Gênero que mais aparece entre os favoritos. Empate: ordem alfabética
- * (`localeCompare('pt-BR')`), então "Ação" vem antes de "Drama".
+ * Quantos favoritos há em cada gênero, do mais frequente ao menos. Empate:
+ * ordem alfabética (`localeCompare('pt-BR')`), então "Ação" vem antes de
+ * "Drama". Um filme conta uma vez por gênero, mesmo se o gênero vier repetido.
  */
-export function mostFrequentGenre(
-  favorites: readonly Pick<FavoriteMovie, 'genres'>[],
-): GenreCount | null {
+export function genreCounts(favorites: readonly Pick<FavoriteMovie, 'genres'>[]): GenreCount[] {
   const counts = new Map<string, number>();
   for (const movie of favorites) {
-    // Um filme conta uma vez por gênero, mesmo se o gênero vier repetido.
     for (const name of new Set(movie.genres.map((g) => g.name))) {
       counts.set(name, (counts.get(name) ?? 0) + 1);
     }
   }
-  let top: GenreCount | null = null;
-  for (const [name, count] of counts) {
-    if (
-      top === null ||
-      count > top.count ||
-      (count === top.count && name.localeCompare(top.name, 'pt-BR') < 0)
-    ) {
-      top = { name, count };
-    }
-  }
-  return top;
+  return [...counts]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
+}
+
+/** Gênero que mais aparece entre os favoritos, ou `null` sem favoritos com gênero. */
+export function mostFrequentGenre(
+  favorites: readonly Pick<FavoriteMovie, 'genres'>[],
+): GenreCount | null {
+  return genreCounts(favorites)[0] ?? null;
+}
+
+/**
+ * Dados do gráfico de gêneros: os mais frequentes e, se houver mais, a soma
+ * dos demais em "Outros" (sempre por último).
+ */
+export function genreChartData(
+  counts: readonly GenreCount[],
+  limit = GENRE_CHART_LIMIT,
+): GenreCount[] {
+  if (counts.length <= limit) return [...counts];
+  const top = counts.slice(0, limit - 1);
+  const rest = counts.slice(limit - 1).reduce((total, item) => total + item.count, 0);
+  return [...top, { name: 'Outros', count: rest }];
 }
 
 export function computeDashboard(
@@ -66,6 +82,7 @@ export function computeDashboard(
     totalRated: ratings.length,
     averageScore: averageScore(ratings),
     topGenre: mostFrequentGenre(favorites),
+    genres: genreCounts(favorites),
   };
 }
 
