@@ -32,7 +32,7 @@ function UserScore({ score }: { score: number | null }) {
   if (score === null) return <p className="text-sm text-muted-foreground">Sem sua avaliação</p>;
   return (
     <p className="flex items-center gap-1 text-sm font-medium">
-      <Star aria-hidden="true" className="size-4 text-primary" />
+      <Star aria-hidden="true" className="size-4 text-highlight" />
       Sua nota: {formatUserScore(score)}
     </p>
   );

@@ -24,7 +24,7 @@ function StatCard({
         <Icon aria-hidden="true" className="size-4" />
         {label}
       </dt>
-      <dd className="text-3xl font-bold tracking-tight">{value}</dd>
+      <dd className="font-display text-3xl font-bold tracking-tight tabular-nums">{value}</dd>
       {hint && <dd className="text-sm text-muted-foreground">{hint}</dd>}
     </Card>
   );
@@ -80,7 +80,7 @@ export function DashboardScreen() {
           value={formatCount(stats.totalRated)}
           hint={
             stats.totalRated > 0 ? (
-              <Link to="/avaliacoes" className="font-medium text-primary hover:underline">
+              <Link to="/avaliacoes" className="font-medium text-highlight hover:underline">
                 Ver minhas avaliações
               </Link>
             ) : undefined

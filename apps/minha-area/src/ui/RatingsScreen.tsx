@@ -104,7 +104,7 @@ function RatingCard({ rating, onDeleted }: { rating: Rating; onDeleted: (title: 
             )}
           </h2>
           <p className="flex items-center gap-1 font-semibold">
-            <Star aria-hidden="true" className="size-4 fill-current text-primary" />
+            <Star aria-hidden="true" className="size-4 fill-current text-highlight" />
             <span className="sr-only">Sua nota:</span>
             {formatUserScore(rating.score)}
             <span className="text-sm font-normal text-muted-foreground">/10</span>

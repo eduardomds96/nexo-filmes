@@ -5,6 +5,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import '@nexo/ui/styles/theme.css';
+@import '@nexo/ui/styles/fonts.css';
 @import '@nexo/ui/styles/tokens.css';
 @import '@nexo/ui/styles/base.css';
 

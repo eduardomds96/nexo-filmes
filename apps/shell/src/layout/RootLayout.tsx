@@ -36,7 +36,7 @@ export function RootLayout() {
             to="/filmes"
             className="flex items-center gap-2 rounded-md py-1 text-lg font-bold tracking-tight"
           >
-            <Clapperboard aria-hidden="true" className="size-6 text-primary" />
+            <Clapperboard aria-hidden="true" className="size-6 text-highlight" />
             Nexo Filmes
           </Link>
 

@@ -46,7 +46,10 @@ export function Pagination({
   const hasNext = page < totalPages;
 
   return (
-    <nav aria-label="Paginação" className={cn('flex flex-col items-center gap-3', className)}>
+    <nav
+      aria-label="Paginação"
+      className={cn('flex flex-col items-center gap-3 tabular-nums', className)}
+    >
       <p className="text-sm text-muted-foreground">
         Página {page} de {totalPages}
       </p>

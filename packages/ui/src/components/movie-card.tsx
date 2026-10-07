@@ -49,12 +49,12 @@ export function MovieCard({
         <h3 className="leading-snug font-semibold">
           <LinkComponent
             to={href}
-            className="rounded-sm outline-none after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:after:ring-3 focus-visible:after:ring-ring/60 hover:underline"
+            className="rounded-sm outline-none after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-ring hover:underline"
           >
             {title}
           </LinkComponent>
         </h3>
-        {year !== null && <p className="text-sm text-muted-foreground">{year}</p>}
+        {year !== null && <p className="text-sm text-muted-foreground tabular-nums">{year}</p>}
         {details}
       </div>
     </Card>
@@ -63,7 +63,7 @@ export function MovieCard({
 
 export function TmdbScore({ value, className }: { value: number; className?: string }) {
   return (
-    <p className={cn('flex items-center gap-1 text-sm font-medium', className)}>
+    <p className={cn('flex items-center gap-1 text-sm font-medium tabular-nums', className)}>
       <Star aria-hidden="true" className="size-4 fill-current text-rating" />
       <span aria-hidden="true">{formatScore(value)}</span>
       <span className="sr-only">Nota da TMDB: {formatScore(value)} de 10</span>

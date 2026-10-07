@@ -3,14 +3,17 @@ import { expect, test } from '@playwright/test';
 
 const PAGES = ['/filmes', '/filme/598', '/favoritos', '/avaliacoes', '/painel', '/nao-existe'];
 
-for (const colorScheme of ['light', 'dark'] as const) {
-  test.describe(`acessibilidade (tema ${colorScheme === 'light' ? 'claro' : 'escuro'})`, () => {
-    test.use({ colorScheme });
-
+for (const theme of ['light', 'dark'] as const) {
+  test.describe(`acessibilidade (tema ${theme === 'light' ? 'claro' : 'escuro'})`, () => {
     for (const path of PAGES) {
       test(`${path} não tem violações WCAG 2.1 AA detectáveis`, async ({ page }) => {
         await page.goto(path);
         await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+        // O padrão é escuro, qualquer que seja o sistema: o claro é escolhido no botão de tema.
+        const toggle = page.getByRole('banner').getByRole('button', { name: 'Tema escuro' });
+        if (theme === 'light') await toggle.click();
+        await expect(toggle).toHaveAttribute('aria-pressed', String(theme === 'dark'));
+        await expect(page.locator('html')).toHaveClass(theme);
         // Espera os dados do usuário (atraso simulado) e as imagens.
         await expect(
           page.getByRole('banner').getByRole('link', { name: /^Favoritos: / }),

@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 import { cn } from '../lib/utils';
 
 const fieldBase =
-  'w-full min-w-0 rounded-md border border-input bg-card px-3 text-base text-foreground shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 disabled:cursor-not-allowed disabled:opacity-60 aria-invalid:border-destructive aria-invalid:ring-destructive/30 md:text-sm';
+  'w-full min-w-0 rounded-md border border-input bg-card px-3 text-base text-foreground shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/70 disabled:cursor-not-allowed disabled:opacity-60 aria-invalid:border-destructive aria-invalid:ring-destructive/30 md:text-sm';
 
 export function Input({ className, type = 'text', ...props }: ComponentProps<'input'>) {
   return <input type={type} className={cn(fieldBase, 'h-10 py-2', className)} {...props} />;

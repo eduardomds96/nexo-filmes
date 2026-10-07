@@ -122,7 +122,7 @@ export function RatingForm({ movie }: { movie: MovieSnapshot }) {
         </h2>
         <Link
           to="/avaliacoes"
-          className="inline-flex items-center gap-1 text-sm font-medium text-primary underline-offset-4 hover:underline"
+          className="inline-flex items-center gap-1 text-sm font-medium text-highlight underline-offset-4 hover:underline"
         >
           <ListChecks aria-hidden="true" className="size-4" />
           Ver todas as minhas avaliações
@@ -183,7 +183,10 @@ export function RatingForm({ movie }: { movie: MovieSnapshot }) {
           />
           <p
             id="comentario-contador"
-            className={cn('text-sm text-muted-foreground', overLimit && 'text-destructive')}
+            className={cn(
+              'text-sm text-muted-foreground tabular-nums',
+              overLimit && 'text-destructive',
+            )}
           >
             {commentLength}/{RATING_COMMENT_MAX_LENGTH} caracteres
           </p>

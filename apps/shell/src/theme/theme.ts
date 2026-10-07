@@ -1,17 +1,18 @@
 import { readThemePreference, writeThemePreference } from '@nexo/user-data';
 import type { ThemePreference } from '@nexo/user-data';
 
-function systemTheme(): ThemePreference {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
+/** Tema sem escolha salva: o produto é escuro por padrão (ver tokens.css). */
+export const DEFAULT_THEME: ThemePreference = 'dark';
 
-/** Tema efetivo: a escolha do usuário ou, sem escolha, o tema do sistema. */
+/** Tema efetivo: a escolha do usuário ou, sem escolha, o tema escuro. */
 export function currentTheme(): ThemePreference {
-  return readThemePreference() ?? systemTheme();
+  return readThemePreference() ?? DEFAULT_THEME;
 }
 
 export function applyTheme(theme: ThemePreference): void {
-  document.documentElement.classList.toggle('dark', theme === 'dark');
+  const root = document.documentElement;
+  root.classList.toggle('dark', theme === 'dark');
+  root.classList.toggle('light', theme === 'light');
 }
 
 export function setTheme(theme: ThemePreference): void {

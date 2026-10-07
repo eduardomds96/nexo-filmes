@@ -1,0 +1,7 @@
+/*
+ * Fontes do produto, hospedadas junto do app (sem CDN): Geist no corpo e
+ * Bricolage Grotesque nos títulos. Só o subconjunto usado (unicode-range) é
+ * baixado. Carregado uma única vez, pelo Shell (e pelos mini-shells).
+ */
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/bricolage-grotesque/opsz.css';
