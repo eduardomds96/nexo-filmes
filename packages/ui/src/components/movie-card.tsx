@@ -56,7 +56,6 @@ export function MovieCard({
             {details}
           </div>
         )}
-        {action && <div className="absolute top-2 right-2 z-10">{action}</div>}
       </div>
       <div className="flex flex-col gap-0.5 px-0.5">
         <h3 className="line-clamp-2 leading-snug font-semibold">
@@ -69,6 +68,16 @@ export function MovieCard({
         </h3>
         {year !== null && <p className="text-sm text-muted-foreground tabular-nums">{year}</p>}
       </div>
+      {/*
+        A ação fica fora do pôster e por último no DOM: assim nunca é coberta pelo
+        link que se estende sobre o card (o pôster vira um contexto de
+        empilhamento quando se move no hover). Acompanha o mesmo deslocamento.
+      */}
+      {action && (
+        <div className="absolute top-2 right-2 z-10 transition-[translate] duration-300 ease-out-soft can-hover:group-hover:-translate-y-1">
+          {action}
+        </div>
+      )}
     </article>
   );
 }
