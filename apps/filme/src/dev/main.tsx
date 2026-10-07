@@ -15,7 +15,6 @@ import { createBrowserRouter, Link, Navigate, Outlet, RouterProvider } from 'rea
 
 import MoviePage from '../expose/MoviePage';
 
-// Modo de dados simulados: a TMDB é respondida por um service worker (MSW).
 if (import.meta.env.VITE_TMDB_MOCK === 'true') {
   const { startTmdbMock } = await import('@nexo/tmdb/mock-browser');
   await startTmdbMock();

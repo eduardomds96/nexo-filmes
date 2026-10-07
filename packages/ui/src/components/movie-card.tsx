@@ -20,9 +20,7 @@ export interface MovieCardProps {
   readonly posterUrl: string | null;
   readonly href: string;
   readonly LinkComponent: ComponentType<MovieCardLinkProps>;
-  /** Linhas extras abaixo do título (nota, gêneros...). */
   readonly details?: ReactNode;
-  /** Ação no canto do pôster (ex.: botão de favorito). */
   readonly action?: ReactNode;
   readonly eagerPoster?: boolean;
   /** Nome de View Transition do pôster, igual ao do detalhe (ex.: `poster-550`). */
@@ -109,7 +107,6 @@ export function MovieCardSkeleton() {
   );
 }
 
-/** Grade responsiva usada no catálogo e nos favoritos (2 colunas em 360 px). */
 export function MovieGrid({
   className,
   children,

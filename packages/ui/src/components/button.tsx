@@ -34,7 +34,6 @@ export const buttonVariants = cva(
 
 export type ButtonProps = ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
-    /** Renderiza o filho (ex.: um link) com o estilo de botão. */
     asChild?: boolean;
   };
 

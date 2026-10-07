@@ -26,7 +26,6 @@ export type ToggleFavoriteResult =
 export interface UserDataStore {
   readonly getState: () => UserDataState;
   readonly subscribe: (listener: () => void) => () => void;
-  /** Carrega favoritos e avaliações pelo repositório (com o atraso simulado). */
   readonly load: () => Promise<void>;
   readonly toggleFavorite: (movie: MovieSnapshot) => Promise<ToggleFavoriteResult>;
   readonly saveRating: (input: RatingInput) => Promise<Rating>;

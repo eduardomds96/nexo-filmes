@@ -77,7 +77,6 @@ export const movieDetailsDtoSchema = z.object({
 });
 export type MovieDetailsDto = z.infer<typeof movieDetailsDtoSchema>;
 
-/** Valida cada item de uma lista e descarta os inválidos. */
 export function parseList<T>(
   items: readonly unknown[] | null | undefined,
   schema: z.ZodType<T>,

@@ -8,7 +8,6 @@ import { BUILD_REMOTE_ENTRIES, registerKnownRemotes } from './remotes/remote-loa
 import { resolveRemoteEntries } from './remotes/remote-manifest';
 import { applyTheme, currentTheme } from './theme/theme';
 
-// Modo de dados simulados: a TMDB é respondida por um service worker (MSW).
 if (import.meta.env.VITE_TMDB_MOCK === 'true') {
   const { startTmdbMock } = await import('@nexo/tmdb/mock-browser');
   await startTmdbMock();

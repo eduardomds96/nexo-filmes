@@ -18,8 +18,6 @@ interface RenderOptions {
   readonly store?: UserDataStore;
 }
 
-/** Utilitários de teste compartilhados pelos micro-frontends (nunca usados em produção). */
-
 /** Renderiza uma página do remote com o que o Shell forneceria: roteador, QueryClient e store. */
 export function renderRoute(
   element: ReactElement,
@@ -53,7 +51,6 @@ export function renderRoute(
     router,
     store,
     queryClient,
-    /** Query string atual, como objeto. */
     search: () => Object.fromEntries(new URLSearchParams(router.state.location.search)),
   };
 }

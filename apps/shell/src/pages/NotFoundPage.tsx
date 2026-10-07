@@ -4,7 +4,6 @@ import { Link } from 'react-router';
 
 const PERFORATIONS = Array.from({ length: 9 }, (_, index) => index);
 
-/** Fileira de furos da película. */
 function Perforations() {
   return (
     <div className="flex justify-between px-3">

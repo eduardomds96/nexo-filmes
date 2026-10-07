@@ -40,7 +40,6 @@ export function readUserDataConfig(env: Readonly<Record<string, unknown>>): User
   };
 }
 
-/** Atraso aleatório (em ms) entre `min` e `max`, inclusive. */
 export function randomDelay(
   min: number,
   max: number,
@@ -49,7 +48,6 @@ export function randomDelay(
   return () => Math.round(min + random() * (max - min));
 }
 
-/** Regra de falha simulada: toda escrita em filme cujo id termina com `suffix` falha. */
 export function failWhenIdEndsWith(suffix: string | null): (movieId: number) => boolean {
   if (suffix === null || suffix === '') return () => false;
   return (movieId) => String(movieId).endsWith(suffix);

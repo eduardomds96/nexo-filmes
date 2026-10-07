@@ -49,7 +49,6 @@ export function sortRatings(ratings: readonly Rating[], order: RatingsOrder): Ra
   }
 }
 
-/** A avaliação foi alterada depois de criada. */
 export function wasEdited(rating: Pick<Rating, 'createdAt' | 'updatedAt'>): boolean {
   return rating.updatedAt !== rating.createdAt;
 }

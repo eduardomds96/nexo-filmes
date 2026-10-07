@@ -28,7 +28,6 @@
   --font-sans:
     'Geist Variable', ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
-  /* Títulos: cartaz de cinema, mas legível. */
   --font-display:
     'Bricolage Grotesque Variable', 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
 
@@ -121,7 +120,6 @@
       transform: scale(1.6);
     }
   }
-  /* Tremida com um toque da cor de erro: o favorito não foi salvo. */
   @keyframes heart-shake {
     20%,
     60% {

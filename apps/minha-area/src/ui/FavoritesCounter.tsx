@@ -14,7 +14,6 @@ function useChangeDirection(value: number): 'up' | 'down' | null {
   return state.direction;
 }
 
-/** Contador do cabeçalho: muda na hora, em qualquer tela, sem recarregar. */
 export function FavoritesCounter({ className }: FavoritesCounterProps) {
   const count = useFavoritesCount();
   const status = useUserDataStatus();

@@ -112,7 +112,6 @@ function FavoriteToggle({ movie }: { movie: MovieDetails }) {
   );
 }
 
-/** Imagem de fundo do hero: aparece suavemente, já atenuada pelo véu. */
 function Backdrop({ src }: { src: string }) {
   const fade = useImageFade();
   return (

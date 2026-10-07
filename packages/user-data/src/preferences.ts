@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-/** Preferência de tema do usuário, também guardada pelo repositório local. */
 export type ThemePreference = 'light' | 'dark';
 
 export const THEME_STORAGE_KEY = 'nexo:v1:theme';

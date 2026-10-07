@@ -65,7 +65,6 @@ async function clickAsync(element: HTMLElement) {
 }
 
 async function renderShell(initialEntry: string) {
-  // As rotas reais do Shell, num roteador em memória.
   const router = createMemoryRouter(routes, { initialEntries: [initialEntry] });
   await act(async () => {
     render(<RouterProvider router={router} />);

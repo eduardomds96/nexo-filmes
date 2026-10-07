@@ -60,7 +60,6 @@ describe('FavoritesCounter', () => {
       toggling = store.toggleFavorite(snapshot(13, 'Treze'));
     });
     const link = screen.getByRole('link', { name: 'Favoritos: 1 filme' });
-    // O número novo entra animado no sentido da mudança.
     expect(link.querySelector('[data-direction]')?.getAttribute('data-direction')).toBe('up');
 
     await act(() => toggling);
@@ -184,7 +183,6 @@ describe('DashboardScreen', () => {
     expect(within(list).getByText('Crime')).toBeDefined();
     expect(within(list).getByText('2 favoritos')).toBeDefined();
 
-    // O gráfico de gêneros traz os mesmos números numa tabela para leitores de tela.
     const table = screen.getByRole('table', { name: 'Favoritos por gênero' });
     expect(
       within(table)

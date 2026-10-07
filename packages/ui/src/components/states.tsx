@@ -54,7 +54,6 @@ export interface ErrorStateProps {
   readonly className?: string;
 }
 
-/** Erro de uma área da página, com ação de nova tentativa. */
 export function ErrorState({
   title = 'Algo deu errado',
   message,

@@ -3,7 +3,6 @@ import type { z } from 'zod';
 import { UserDataError } from './errors';
 import type { StorageKey } from './schemas';
 
-/** Subconjunto da Web Storage API de que o repositório precisa. */
 export type KeyValueStorage = Pick<Storage, 'getItem' | 'setItem'>;
 
 /**

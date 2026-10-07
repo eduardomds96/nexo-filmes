@@ -15,7 +15,6 @@ import { tmdbImageUrl } from './images';
  * Nexo Filmes. Nenhum componente conhece o formato da TMDB.
  */
 
-/** Quantidade máxima de pessoas do elenco exibidas no detalhe. */
 export const CAST_LIMIT = 12;
 
 /** A TMDB não serve páginas além da 500, mesmo quando `total_pages` é maior. */
@@ -37,7 +36,6 @@ export function toGenreLookup(genres: readonly Genre[]): GenreLookup {
   return new Map(genres.map((genre) => [genre.id, genre]));
 }
 
-/** Extrai o ano de uma data `AAAA-MM-DD`. Datas vazias ou malformadas viram `null`. */
 export function yearFromDate(date: string | null): number | null {
   const match = date ? /^(\d{4})-\d{2}-\d{2}$/.exec(date) : null;
   return match?.[1] ? Number(match[1]) : null;

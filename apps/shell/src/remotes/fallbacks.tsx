@@ -3,7 +3,6 @@ import { RotateCw } from 'lucide-react';
 
 import type { RemoteErrorRenderProps } from './RemoteBoundary';
 
-/** Esqueleto genérico de página enquanto o remote é baixado. */
 export function PageSkeleton() {
   return (
     <div aria-busy="true" className="flex flex-col gap-6">
@@ -37,7 +36,6 @@ export function RemotePageError({ areaLabel, retry }: RemoteErrorRenderProps) {
   );
 }
 
-/** Erro compacto para o widget do cabeçalho. */
 export function RemoteWidgetError({ areaLabel, retry }: RemoteErrorRenderProps) {
   return (
     <div role="alert" className="flex items-center">

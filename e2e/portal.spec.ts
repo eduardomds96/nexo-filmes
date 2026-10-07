@@ -192,7 +192,6 @@ test.describe('avaliação', () => {
     await page.getByRole('button', { name: 'Salvar avaliação' }).click();
     await expect(page.getByRole('button', { name: 'Atualizar avaliação' })).toBeVisible();
 
-    // A avaliação aparece em "Minhas avaliações", com link de volta ao formulário.
     await page.getByRole('link', { name: 'Ver todas as minhas avaliações' }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'Minhas avaliações' })).toBeVisible();
     await expect(page.getByText('1 filme avaliado · média 8,5')).toBeVisible();

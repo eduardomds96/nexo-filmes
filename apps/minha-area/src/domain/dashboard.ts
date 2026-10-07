@@ -52,7 +52,6 @@ export function genreCounts(favorites: readonly Pick<FavoriteMovie, 'genres'>[])
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'pt-BR'));
 }
 
-/** Gênero que mais aparece entre os favoritos, ou `null` sem favoritos com gênero. */
 export function mostFrequentGenre(
   favorites: readonly Pick<FavoriteMovie, 'genres'>[],
 ): GenreCount | null {
@@ -90,7 +89,6 @@ export interface FavoriteWithRating extends FavoriteMovie {
   readonly userScore: number | null;
 }
 
-/** Junta cada favorito com a nota que o usuário deu (se houver). */
 export function withUserScores(
   favorites: readonly FavoriteMovie[],
   ratings: ReadonlyMap<number, Rating>,

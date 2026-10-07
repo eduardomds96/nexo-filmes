@@ -59,7 +59,6 @@ interface TooltipPayloadItem {
   readonly payload?: Record<string, unknown>;
 }
 
-/** Conteúdo do tooltip: rótulo do item e, por série, cor, nome e valor. */
 export function ChartTooltipContent({
   active,
   payload,

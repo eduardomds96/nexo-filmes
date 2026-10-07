@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-/** Atraso padrão da busca por título. */
 export const SEARCH_DEBOUNCE_MS = 400;
 
 /**

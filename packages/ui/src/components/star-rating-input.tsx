@@ -7,7 +7,6 @@ import { cn } from '../lib/utils';
 
 const STARS = 10;
 const STEP = 0.5;
-/** Valores possíveis: 0,5 a 10 em passos de 0,5 (meia estrela). */
 const VALUES = Array.from({ length: STARS / STEP }, (_, index) => (index + 1) * STEP);
 
 export interface StarRatingInputHandle {

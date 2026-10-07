@@ -6,7 +6,6 @@ export const RATING_SCORE_MAX = 10;
 export const RATING_SCORE_STEP = 0.5;
 export const RATING_COMMENT_MAX_LENGTH = 500;
 
-/** Notas válidas, de 0,5 a 10 em passos de 0,5. */
 export const RATING_SCORES: readonly number[] = Array.from(
   { length: (RATING_SCORE_MAX - RATING_SCORE_MIN) / RATING_SCORE_STEP + 1 },
   (_, index) => RATING_SCORE_MIN + index * RATING_SCORE_STEP,

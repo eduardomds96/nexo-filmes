@@ -5,7 +5,6 @@ import { cn } from '../lib/utils';
 import { buttonVariants } from './button';
 
 export interface FavoriteButtonProps {
-  /** Título do filme, usado no rótulo acessível. */
   readonly title: string;
   readonly isFavorite: boolean;
   readonly isPending: boolean;

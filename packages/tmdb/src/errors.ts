@@ -51,14 +51,9 @@ export function isAbortError(error: unknown): boolean {
   return error instanceof DOMException && error.name === 'AbortError';
 }
 
-/** Máximo de novas tentativas automáticas para falhas transitórias. */
 export const MAX_AUTOMATIC_RETRIES = 1;
 
-/**
- * Política de retry para o TanStack Query: no máximo uma nova tentativa, e
- * só para rede ou servidor. 429, 404 e afins vão direto para a tela, que
- * oferece "Tentar novamente" ao usuário.
- */
+/** Política de retry para o TanStack Query; o resto vai para a tela com "Tentar novamente". */
 export function shouldRetryTmdbRequest(failureCount: number, error: unknown): boolean {
   return failureCount < MAX_AUTOMATIC_RETRIES && isRetryableTmdbError(error);
 }

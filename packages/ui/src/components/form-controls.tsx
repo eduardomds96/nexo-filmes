@@ -42,7 +42,6 @@ export function Label({ className, ...props }: ComponentProps<typeof LabelPrimit
   );
 }
 
-/** Mensagem de erro de um campo, ligada a ele por `aria-describedby`. */
 export function FieldError({ className, children, ...props }: ComponentProps<'p'>) {
   if (!children) return null;
   return (

@@ -66,7 +66,6 @@ describe('MovieScreen', () => {
     const list = within(screen.getByRole('region', { name: 'Elenco' })).getByRole('list', {
       name: 'Elenco',
     });
-    // A lista rola na horizontal e precisa ser alcançável pelo teclado.
     expect(list.getAttribute('tabindex')).toBe('0');
     const [norton, helena] = within(list).getAllByRole('listitem');
     expect(norton?.querySelector('img')?.getAttribute('src')).toBe(

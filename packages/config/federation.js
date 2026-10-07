@@ -4,7 +4,6 @@
  * Código de build (Node), não de runtime: nenhum micro-frontend importa outro.
  */
 
-/** Portas fixas dos dev servers e do preview. */
 export const PORTS = /** @type {const} */ ({
   shell: 3000,
   catalogo: 3001,

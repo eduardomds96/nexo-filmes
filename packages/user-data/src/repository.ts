@@ -26,9 +26,7 @@ export interface LocalRepositoryOptions {
 
 /** Repositório local que, além da interface assíncrona, permite leitura síncrona para sincronização. */
 export interface LocalUserDataRepository extends UserDataRepository {
-  /** Lê os favoritos direto do armazenamento, sem atraso. */
   readFavoritesNow(): FavoriteMovie[];
-  /** Lê as avaliações direto do armazenamento, sem atraso. */
   readRatingsNow(): Rating[];
 }
 

@@ -4,7 +4,6 @@ import type { ThemePreference } from '@nexo/user-data';
 /** Tema sem escolha salva: o produto é escuro por padrão (ver tokens.css). */
 export const DEFAULT_THEME: ThemePreference = 'dark';
 
-/** Tema efetivo: a escolha do usuário ou, sem escolha, o tema escuro. */
 export function currentTheme(): ThemePreference {
   return readThemePreference() ?? DEFAULT_THEME;
 }

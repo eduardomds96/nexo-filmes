@@ -4,7 +4,6 @@ import { useLocation } from 'react-router';
 import { PageSkeleton, RemotePageError } from './fallbacks';
 import { RemoteBoundary } from './RemoteBoundary';
 
-/** Página inteira servida por um remote, com isolamento de falhas. */
 export function RemoteRoute({ id, areaLabel }: { id: RemoteModuleId; areaLabel: string }) {
   const { pathname } = useLocation();
   return (

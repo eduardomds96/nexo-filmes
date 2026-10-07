@@ -77,7 +77,6 @@ describe('RatingForm', () => {
     const { store, submit, checkedScore } = renderForm();
     const first = screen.getByRole('radio', { name: '0,5 de 10' });
 
-    // Só um rádio do grupo recebe Tab.
     expect(screen.getAllByRole('radio').filter((r) => r.tabIndex === 0)).toEqual([first]);
     first.focus();
     await user.keyboard('{ArrowRight}');

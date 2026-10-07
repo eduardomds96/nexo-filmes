@@ -67,7 +67,6 @@ export function catalogQueryKey(request: CatalogRequest) {
   return ['tmdb', 'catalog', request] as const;
 }
 
-/** Snapshot mínimo guardado junto do favorito. */
 export function toSnapshot(movie: Movie): MovieSnapshot {
   return {
     id: movie.id,

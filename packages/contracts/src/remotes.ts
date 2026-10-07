@@ -19,6 +19,5 @@ export interface RemoteModuleMap {
 export type RemoteModuleId = keyof RemoteModuleMap;
 
 export interface FavoritesCounterProps {
-  /** Classe extra aplicada ao link do contador. */
   readonly className?: string;
 }

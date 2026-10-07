@@ -16,7 +16,6 @@ export interface PaginationProps {
   readonly page: number;
   readonly totalPages: number;
   readonly hrefFor: (page: number) => string;
-  /** Componente de link do roteador (ex.: `Link` do React Router). */
   readonly LinkComponent: ComponentType<PaginationLinkProps>;
   readonly className?: string;
 }

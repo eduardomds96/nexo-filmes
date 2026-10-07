@@ -30,7 +30,6 @@ function register(name: RemoteName, entry: string, force: boolean): void {
   registerRemotes([{ name, entry, type: 'module', shareScope: 'default' }], { force });
 }
 
-/** Registra no runtime do Module Federation os remotes conhecidos pelo Shell. */
 export function registerKnownRemotes(resolved: RemoteEntries = BUILD_REMOTE_ENTRIES): void {
   entries = resolved;
   for (const [name, entry] of Object.entries(entries)) {
@@ -98,7 +97,6 @@ export function getRemoteModule<Id extends RemoteModuleId>(id: Id): Promise<Remo
   return promise as Promise<RemoteModule<Id>>;
 }
 
-/** Descarta o módulo do cache para que a próxima renderização tente carregá-lo de novo. */
 export function evictRemoteModule(id: RemoteModuleId): void {
   cache.delete(id);
 }

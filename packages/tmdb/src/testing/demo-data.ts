@@ -205,7 +205,6 @@ function escapeXml(value: string): string {
   return value.replace(/[<>&'"]/g, (char) => `&#${String(char.charCodeAt(0))};`);
 }
 
-/** Pôster SVG gerado, servido no lugar das imagens da TMDB no modo simulado. */
 export function demoPosterSvg(id: number): string {
   const movie = DEMO_MOVIES.find((m) => m.id === id);
   const color = POSTER_COLORS[id % POSTER_COLORS.length] ?? '#333';
@@ -213,13 +212,11 @@ export function demoPosterSvg(id: number): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750" viewBox="0 0 500 750"><rect width="500" height="750" fill="${color}"/><text x="250" y="375" fill="#fff" font-family="system-ui,sans-serif" font-size="34" text-anchor="middle">${title.slice(0, 26)}</text><text x="250" y="700" fill="#fff" opacity="0.7" font-family="system-ui,sans-serif" font-size="22" text-anchor="middle">Nexo Filmes · demo</text></svg>`;
 }
 
-/** Imagem de fundo (16:9) gerada, com um degradê na cor do pôster. */
 export function demoBackdropSvg(id: number): string {
   const color = POSTER_COLORS[id % POSTER_COLORS.length] ?? '#333';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs><radialGradient id="g" cx="0.7" cy="0.3" r="0.9"><stop offset="0" stop-color="${color}"/><stop offset="1" stop-color="#0b0d12"/></radialGradient></defs><rect width="1280" height="720" fill="url(#g)"/><circle cx="900" cy="220" r="160" fill="#fff" opacity="0.06"/><circle cx="1050" cy="420" r="90" fill="#fff" opacity="0.05"/></svg>`;
 }
 
-/** Foto de elenco gerada (2:3), com uma silhueta. */
 export function demoProfileSvg(id: number): string {
   const color = POSTER_COLORS[id % POSTER_COLORS.length] ?? '#333';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="185" height="278" viewBox="0 0 185 278"><rect width="185" height="278" fill="${color}"/><circle cx="92" cy="105" r="45" fill="#fff" opacity="0.35"/><ellipse cx="92" cy="250" rx="80" ry="70" fill="#fff" opacity="0.35"/></svg>`;

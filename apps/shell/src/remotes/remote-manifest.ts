@@ -3,7 +3,6 @@ import { z } from 'zod';
 
 export type RemoteEntries = Record<RemoteName, string>;
 
-/** Caminho do manifesto, ao lado do index.html do Shell. */
 export const REMOTES_MANIFEST_PATH = '/remotes.json';
 
 const entrySchema = z.url({ protocol: /^https?$/ });

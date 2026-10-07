@@ -70,7 +70,6 @@ export interface FavoriteControl {
   readonly toggle: () => Promise<ToggleFavoriteResult>;
 }
 
-/** Estado e ação de favorito de um filme, com atualização otimista. */
 export function useFavorite(
   movie: MovieSnapshot,
   options: UseFavoriteOptions = {},

@@ -39,7 +39,6 @@ export type RatingFormOutput = z.output<typeof ratingFormSchema>;
 
 export const EMPTY_RATING_FORM: RatingFormInput = { score: '', comment: '' };
 
-/** Valores do formulário a partir de uma avaliação salva. */
 export function ratingToFormValues(rating: Rating | null): RatingFormInput {
   if (!rating) return EMPTY_RATING_FORM;
   return { score: formatUserScore(rating.score), comment: rating.comment };

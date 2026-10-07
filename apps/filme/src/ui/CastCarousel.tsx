@@ -72,7 +72,6 @@ export function CastCarousel({
   heading,
 }: {
   cast: readonly CastMember[];
-  /** Título da seção, alinhado aos botões de rolagem. */
   heading: ReactNode;
 }) {
   const listRef = useRef<HTMLUListElement>(null);

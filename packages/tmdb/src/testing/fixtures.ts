@@ -44,7 +44,6 @@ export function moviePage(
   return { page, total_pages: totalPages, total_results: totalResults, results: items };
 }
 
-/** Uma página com 20 filmes, com ids a partir de `firstId`. */
 export function fullMoviePage(page = 1, firstId = 100) {
   const items = Array.from({ length: 20 }, (_, index) =>
     movieListItem({ id: firstId + (page - 1) * 20 + index }),
