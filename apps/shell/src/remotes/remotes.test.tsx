@@ -209,7 +209,7 @@ describe('layout do Shell', () => {
       within(nav)
         .getAllByRole('link')
         .map((a) => a.textContent),
-    ).toEqual(['Filmes', 'Favoritos', 'Painel']);
+    ).toEqual(['Filmes', 'Favoritos', 'Avaliações', 'Painel']);
     expect(await screen.findByRole('link', { name: 'Contador: 3' })).toBeDefined();
   });
 
@@ -241,6 +241,7 @@ describe('rotas', () => {
       'filmes',
       'filme/:id',
       'favoritos',
+      'avaliacoes',
       'painel',
       '*',
     ]);

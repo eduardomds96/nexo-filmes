@@ -9,6 +9,7 @@ import { ThemeToggle } from '../theme/ThemeToggle';
 const NAV_ITEMS = [
   { to: '/filmes', label: 'Filmes' },
   { to: '/favoritos', label: 'Favoritos' },
+  { to: '/avaliacoes', label: 'Avaliações' },
   { to: '/painel', label: 'Painel' },
 ] as const;
 

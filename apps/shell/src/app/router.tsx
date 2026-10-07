@@ -26,6 +26,10 @@ export const routes: RouteObject[] = [
         element: <RemoteRoute id="minha_area/FavoritesPage" areaLabel="seus favoritos" />,
       },
       {
+        path: 'avaliacoes',
+        element: <RemoteRoute id="minha_area/RatingsPage" areaLabel="suas avaliações" />,
+      },
+      {
         path: 'painel',
         element: <RemoteRoute id="minha_area/DashboardPage" areaLabel="o painel" />,
       },
