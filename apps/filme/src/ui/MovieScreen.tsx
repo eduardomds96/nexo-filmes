@@ -224,7 +224,7 @@ function Details({ movie }: { movie: MovieDetails }) {
 
       <Separator />
 
-      <RatingForm movie={movie} />
+      <RatingForm movie={detailsToSnapshot(movie)} />
     </article>
   );
 }

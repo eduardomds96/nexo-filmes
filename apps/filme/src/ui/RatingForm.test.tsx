@@ -12,10 +12,17 @@ const { toastError, toastSuccess } = vi.hoisted(() => ({
 }));
 vi.mock('sonner', () => ({ toast: { error: toastError, success: toastSuccess } }));
 
-function renderForm(movieId = 550, options = {}) {
-  const utils = renderRoute(<RatingForm movie={{ id: movieId, title: 'Clube da Luta' }} />, {
+function renderForm(movieId = 550, options = {}, hashEntry = '/') {
+  const movie = {
+    id: movieId,
+    title: 'Clube da Luta',
+    year: 1999,
+    posterUrl: null,
+    genres: [{ id: 18, name: 'Drama' }],
+  };
+  const utils = renderRoute(<RatingForm movie={movie} />, {
     path: '/',
-    initialEntry: '/',
+    initialEntry: hashEntry,
     ...options,
   });
   return {
@@ -135,5 +142,33 @@ describe('RatingForm', () => {
       expect(store.getState().ratings.size).toBe(0);
     });
     expect(screen.getByRole('button', { name: 'Salvar avaliação' })).toBeDefined();
+  });
+
+  it('salva o snapshot do filme junto da avaliação', async () => {
+    const user = userEvent.setup();
+    const { store, score, submit } = renderForm();
+    await user.type(score(), '8');
+    await user.click(submit());
+    await waitFor(() => {
+      expect(store.getState().ratings.get(550)?.movie).toMatchObject({
+        id: 550,
+        title: 'Clube da Luta',
+        year: 1999,
+      });
+    });
+  });
+
+  it('tem link para a lista de avaliações', () => {
+    renderForm();
+    expect(
+      screen.getByRole('link', { name: 'Ver todas as minhas avaliações' }).getAttribute('href'),
+    ).toBe('/avaliacoes');
+  });
+
+  it('vindo de #avaliacao, foca o campo de nota', async () => {
+    const { score } = renderForm(550, {}, '/#avaliacao');
+    await waitFor(() => {
+      expect(document.activeElement).toBe(score());
+    });
   });
 });

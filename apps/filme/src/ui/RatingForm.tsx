@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { MovieDetails } from '@nexo/contracts';
+import type { MovieSnapshot } from '@nexo/contracts';
 import {
   Button,
   FieldError,
@@ -12,8 +12,10 @@ import {
   cn,
 } from '@nexo/ui';
 import { RATING_COMMENT_MAX_LENGTH, useRating, useUserDataStore } from '@nexo/user-data';
-import { useState } from 'react';
+import { ListChecks } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { Link, useLocation } from 'react-router';
 import { toast } from 'sonner';
 
 import { ratingFormSchema, ratingToFormValues } from '../domain/rating-form';
@@ -23,7 +25,12 @@ type SaveStatus = 'idle' | 'saving' | 'saved' | 'failed' | 'deleted';
 
 const dateFormat = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' });
 
-export function RatingForm({ movie }: { movie: Pick<MovieDetails, 'id' | 'title'> }) {
+/** Âncora do formulário: `/filme/:id#avaliacao` leva direto a ele. */
+export const RATING_ANCHOR = 'avaliacao';
+
+export function RatingForm({ movie }: { movie: MovieSnapshot }) {
+  const { hash } = useLocation();
+  const sectionRef = useRef<HTMLElement>(null);
   const store = useUserDataStore();
   const rating = useRating(movie.id);
   const [status, setStatus] = useState<SaveStatus>('idle');
@@ -34,6 +41,7 @@ export function RatingForm({ movie }: { movie: Pick<MovieDetails, 'id' | 'title'
     handleSubmit,
     control,
     reset,
+    setFocus,
     formState: { errors, isSubmitting },
   } = useForm<RatingFormInput, unknown, RatingFormOutput>({
     resolver: zodResolver(ratingFormSchema),
@@ -43,6 +51,13 @@ export function RatingForm({ movie }: { movie: Pick<MovieDetails, 'id' | 'title'
     resetOptions: { keepDirtyValues: true },
     shouldFocusError: true,
   });
+
+  // Vindo de "Editar avaliação" (`#avaliacao`): rola até o formulário e foca a nota.
+  useEffect(() => {
+    if (hash !== `#${RATING_ANCHOR}`) return;
+    sectionRef.current?.scrollIntoView({ block: 'start' });
+    setFocus('score');
+  }, [hash, setFocus]);
 
   const saving = isSubmitting || status === 'saving';
   const commentLength = useWatch({ control, name: 'comment' }).length;
@@ -55,6 +70,7 @@ export function RatingForm({ movie }: { movie: Pick<MovieDetails, 'id' | 'title'
         movieId: movie.id,
         score: values.score,
         comment: values.comment,
+        movie,
       });
       reset(ratingToFormValues(saved));
       setStatus('saved');
@@ -94,10 +110,24 @@ export function RatingForm({ movie }: { movie: Pick<MovieDetails, 'id' | 'title'
             : '';
 
   return (
-    <section aria-labelledby="avaliacao-titulo" className="flex max-w-2xl flex-col gap-4">
-      <h2 id="avaliacao-titulo" className="text-xl font-semibold">
-        Sua avaliação
-      </h2>
+    <section
+      ref={sectionRef}
+      id={RATING_ANCHOR}
+      aria-labelledby="avaliacao-titulo"
+      className="flex max-w-2xl scroll-mt-24 flex-col gap-4"
+    >
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 id="avaliacao-titulo" className="text-xl font-semibold">
+          Sua avaliação
+        </h2>
+        <Link
+          to="/avaliacoes"
+          className="inline-flex items-center gap-1 text-sm font-medium text-primary underline-offset-4 hover:underline"
+        >
+          <ListChecks aria-hidden="true" className="size-4" />
+          Ver todas as minhas avaliações
+        </Link>
+      </div>
 
       {rating && (
         <p className="text-sm text-muted-foreground">
