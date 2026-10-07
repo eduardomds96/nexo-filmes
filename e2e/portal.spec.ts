@@ -136,7 +136,11 @@ test.describe('catálogo', () => {
       '2 filmes encontrados.',
     );
 
-    await page.getByRole('radio', { name: 'Fantasia' }).check();
+    // O rádio é visualmente oculto: o usuário clica no chip (o rótulo).
+    await page
+      .locator('label')
+      .filter({ hasText: /^Fantasia$/ })
+      .click();
     await expect(page).toHaveURL(/q=senhor&genero=14/);
 
     await page.reload();
