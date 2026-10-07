@@ -10,3 +10,10 @@
 @import '@nexo/ui/styles/base.css';
 
 @source '../../../../packages/ui/src';
+
+/* Toasts acima da barra de navegação inferior (até 640 px; ver RootLayout). */
+@media (width < 40rem) {
+  :root {
+    --toast-offset-bottom: calc(var(--spacing-bottom-nav) + 1rem + env(safe-area-inset-bottom));
+  }
+}

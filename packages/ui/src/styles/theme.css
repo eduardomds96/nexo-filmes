@@ -63,4 +63,25 @@
   --text-display: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
   --text-display--line-height: 1.05;
   --text-display--letter-spacing: -0.03em;
+
+  /*
+   * Microinterações. Com prefers-reduced-motion, base.css reduz qualquer
+   * animação a um instante, então o estado final aparece sem movimento.
+   */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-count-up: count-up 320ms var(--ease-out-soft);
+  --animate-count-down: count-down 320ms var(--ease-out-soft);
+
+  @keyframes count-up {
+    from {
+      opacity: 0;
+      transform: translateY(70%);
+    }
+  }
+  @keyframes count-down {
+    from {
+      opacity: 0;
+      transform: translateY(-70%);
+    }
+  }
 }

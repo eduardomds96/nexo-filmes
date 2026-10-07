@@ -204,12 +204,22 @@ describe('layout do Shell', () => {
     expect(screen.getByRole('link', { name: 'Pular para o conteúdo' }).getAttribute('href')).toBe(
       '#conteudo',
     );
-    const nav = screen.getByRole('navigation', { name: 'Principal' });
-    expect(
-      within(nav)
-        .getAllByRole('link')
-        .map((a) => a.textContent),
-    ).toEqual(['Filmes', 'Favoritos', 'Avaliações', 'Painel']);
+    // Cabeçalho (acima de 640 px) e barra inferior (até 640 px): o CSS mostra só uma.
+    const navs = screen.getAllByRole('navigation', { name: 'Principal' });
+    expect(navs).toHaveLength(2);
+    const [top, bottom] = navs;
+    expect(top?.closest('header')).not.toBeNull();
+    expect(bottom?.closest('header')).toBeNull();
+    for (const nav of navs) {
+      expect(
+        within(nav)
+          .getAllByRole('link')
+          .map((a) => a.textContent),
+      ).toEqual(['Filmes', 'Favoritos', 'Avaliações', 'Painel']);
+      expect(within(nav).getByRole('link', { name: 'Filmes' }).getAttribute('aria-current')).toBe(
+        'page',
+      );
+    }
     expect(await screen.findByRole('link', { name: 'Contador: 3' })).toBeDefined();
   });
 
@@ -222,7 +232,7 @@ describe('layout do Shell', () => {
     const retry = await screen.findByRole('button', { name: 'Tentar novamente' });
     expect(retry.closest('header')).not.toBeNull();
 
-    await user.click(screen.getByRole('link', { name: 'Filmes' }));
+    await user.click(within(screen.getByRole('banner')).getByRole('link', { name: 'Filmes' }));
     await waitFor(() => {
       expect(screen.getByText('Página do catálogo')).toBeDefined();
     });

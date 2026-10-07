@@ -59,10 +59,13 @@ describe('FavoritesCounter', () => {
     act(() => {
       toggling = store.toggleFavorite(snapshot(13, 'Treze'));
     });
-    expect(screen.getByRole('link', { name: 'Favoritos: 1 filme' })).toBeDefined();
+    const link = screen.getByRole('link', { name: 'Favoritos: 1 filme' });
+    // O número novo entra animado no sentido da mudança.
+    expect(link.querySelector('[data-direction]')?.getAttribute('data-direction')).toBe('up');
 
     await act(() => toggling);
     expect(screen.getByRole('link', { name: 'Favoritos: 0 filmes' })).toBeDefined();
+    expect(link.querySelector('[data-direction]')?.getAttribute('data-direction')).toBe('down');
   });
 });
 

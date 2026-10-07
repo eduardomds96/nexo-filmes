@@ -15,6 +15,9 @@ export function Toaster(props: ToasterProps) {
       closeButton
       toastOptions={{ duration: 6000 }}
       containerAriaLabel="Notificações"
+      // Acima da barra de navegação inferior do celular (ver base.css).
+      offset={{ bottom: 'var(--toast-offset-bottom, 24px)' }}
+      mobileOffset={{ bottom: 'var(--toast-offset-bottom, 16px)' }}
       style={
         {
           '--normal-bg': 'var(--popover)',
