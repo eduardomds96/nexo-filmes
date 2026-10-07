@@ -10,6 +10,8 @@ export interface MovieCardLinkProps {
   readonly to: string;
   readonly className?: string;
   readonly children: ReactNode;
+  /** Navegação com View Transition (o pôster viaja até o detalhe). */
+  readonly viewTransition?: boolean;
 }
 
 export interface MovieCardProps {
@@ -23,6 +25,8 @@ export interface MovieCardProps {
   /** Ação no canto do pôster (ex.: botão de favorito). */
   readonly action?: ReactNode;
   readonly eagerPoster?: boolean;
+  /** Nome de View Transition do pôster, igual ao do detalhe (ex.: `poster-550`). */
+  readonly transitionName?: string;
 }
 
 /**
@@ -41,6 +45,7 @@ export function MovieCard({
   details,
   action,
   eagerPoster = false,
+  transitionName,
 }: MovieCardProps) {
   return (
     <article className="group relative flex h-full flex-col gap-2.5">
@@ -49,6 +54,7 @@ export function MovieCard({
           src={posterUrl}
           title={title}
           eager={eagerPoster}
+          transitionName={transitionName}
           className="rounded-none transition-transform duration-500 ease-out-soft can-hover:group-hover:scale-[1.04]"
         />
         {details && (
@@ -61,6 +67,7 @@ export function MovieCard({
         <h3 className="line-clamp-2 leading-snug font-semibold">
           <LinkComponent
             to={href}
+            viewTransition={transitionName !== undefined}
             className="rounded-sm outline-none after:absolute after:inset-0 after:rounded-xl after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-ring focus-visible:after:ring-offset-2 focus-visible:after:ring-offset-background hover:underline"
           >
             {title}

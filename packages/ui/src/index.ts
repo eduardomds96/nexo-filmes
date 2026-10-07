@@ -34,4 +34,5 @@ export {
   initials,
   plural,
 } from './lib/format';
+export { IMAGE_FADE_CLASSES, useImageFade } from './lib/use-image-fade';
 export { cn } from './lib/utils';

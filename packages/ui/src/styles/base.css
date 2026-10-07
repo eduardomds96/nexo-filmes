@@ -41,6 +41,12 @@
     outline: none;
   }
 
+  /* Transição entre lista e detalhe (View Transitions): o pôster viaja. */
+  ::view-transition-group(*) {
+    animation-duration: 380ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     ::before,
@@ -49,6 +55,13 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
+    }
+
+    /* Sem a animação de pôster entre lista e detalhe: a troca é imediata. */
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+      animation: none !important;
     }
   }
 }

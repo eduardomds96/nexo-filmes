@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 interface RouterLinkProps {
   readonly to: string;
   readonly className?: string;
+  readonly viewTransition?: boolean;
   readonly children: ReactNode;
 }
 

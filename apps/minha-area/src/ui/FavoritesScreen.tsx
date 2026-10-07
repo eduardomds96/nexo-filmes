@@ -61,6 +61,7 @@ function FavoriteCard({
       posterUrl={movie.posterUrl}
       href={`/filme/${String(movie.id)}`}
       LinkComponent={RouterLink}
+      transitionName={`poster-${String(movie.id)}`}
       action={
         <FavoriteButton
           tone="onImage"

@@ -91,6 +91,49 @@
   --animate-count-down: count-down 320ms var(--ease-out-soft);
 
   --animate-float: float 4s ease-in-out infinite;
+  /* Coração: pulso enquanto salva, estalo ao favoritar, tremida ao desfazer. */
+  --animate-heart-pulse: heart-pulse 900ms ease-in-out infinite;
+  --animate-heart-pop: heart-pop 420ms var(--ease-out-soft);
+  --animate-heart-burst: heart-burst 520ms var(--ease-out-soft) forwards;
+  --animate-heart-shake: heart-shake 480ms ease-in-out;
+
+  @keyframes heart-pulse {
+    50% {
+      opacity: 0.45;
+      transform: scale(0.88);
+    }
+  }
+  @keyframes heart-pop {
+    0% {
+      transform: scale(0.6);
+    }
+    55% {
+      transform: scale(1.3);
+    }
+  }
+  @keyframes heart-burst {
+    from {
+      opacity: 0.7;
+      transform: scale(0.4);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+  /* Tremida com um toque da cor de erro: o favorito não foi salvo. */
+  @keyframes heart-shake {
+    20%,
+    60% {
+      color: var(--color-destructive);
+      transform: translateX(-3px) rotate(-8deg);
+    }
+    40%,
+    80% {
+      color: var(--color-destructive);
+      transform: translateX(3px) rotate(8deg);
+    }
+  }
 
   @keyframes float {
     50% {

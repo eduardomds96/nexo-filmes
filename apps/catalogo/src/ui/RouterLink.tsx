@@ -6,6 +6,7 @@ interface RouterLinkProps {
   readonly className?: string;
   readonly 'aria-label'?: string;
   readonly 'aria-current'?: 'page';
+  readonly viewTransition?: boolean;
   readonly children: ReactNode;
 }
 

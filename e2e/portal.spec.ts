@@ -128,6 +128,19 @@ test.describe('favoritos', () => {
 });
 
 test.describe('catálogo', () => {
+  test('o pôster tem o mesmo nome de View Transition na lista e no detalhe', async ({ page }) => {
+    const transitionName = (name: string) =>
+      page
+        .getByRole('img', { name })
+        .evaluate((element) => getComputedStyle(element).viewTransitionName);
+
+    await page.goto('/filmes');
+    expect(await transitionName('Pôster do filme Cidade de Deus')).toBe('poster-598');
+    await page.getByRole('link', { name: 'Cidade de Deus' }).click();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Cidade de Deus');
+    expect(await transitionName('Pôster do filme Cidade de Deus')).toBe('poster-598');
+  });
+
   test('busca e gênero ficam na URL e sobrevivem ao recarregar', async ({ page }) => {
     await page.goto('/filmes');
     await page.getByLabel('Buscar por título').fill('senhor');

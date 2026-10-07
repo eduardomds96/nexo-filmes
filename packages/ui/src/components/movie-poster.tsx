@@ -1,6 +1,7 @@
 import { Film } from 'lucide-react';
 import { useState } from 'react';
 
+import { IMAGE_FADE_CLASSES, useImageFade } from '../lib/use-image-fade';
 import { cn } from '../lib/utils';
 
 const SIZES = {
@@ -14,6 +15,11 @@ export interface MoviePosterProps {
   readonly size?: keyof typeof SIZES;
   /** Carregar já (acima da dobra) em vez de sob demanda. */
   readonly eager?: boolean;
+  /**
+   * Nome de View Transition (ex.: `poster-550`): o mesmo nome na lista e no
+   * detalhe faz o pôster viajar de um para o outro na navegação.
+   */
+  readonly transitionName?: string | undefined;
   readonly className?: string;
 }
 
@@ -23,16 +29,20 @@ export function MoviePoster({
   title,
   size = 'list',
   eager = false,
+  transitionName,
   className,
 }: MoviePosterProps) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const fade = useImageFade();
   const { width, height } = SIZES[size];
+  const style = transitionName ? { viewTransitionName: transitionName } : undefined;
   const classes = cn('aspect-[2/3] w-full rounded-lg bg-muted object-cover', className);
 
   if (src === null || failedSrc === src) {
     return (
       <div
         role="img"
+        style={style}
         aria-label={`Pôster indisponível: ${title}`}
         className={cn(classes, 'flex flex-col items-center justify-center gap-2 p-4 text-center')}
       >
@@ -52,7 +62,9 @@ export function MoviePoster({
       height={height}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
-      className={classes}
+      {...fade}
+      style={style}
+      className={cn(classes, IMAGE_FADE_CLASSES)}
       onError={() => {
         setFailedSrc(src);
       }}

@@ -25,6 +25,7 @@ export function CatalogMovieCard({ movie, eager }: { movie: Movie; eager: boolea
       href={`/filme/${String(movie.id)}`}
       LinkComponent={RouterLink}
       eagerPoster={eager}
+      transitionName={`poster-${String(movie.id)}`}
       action={
         <FavoriteButton
           tone="onImage"

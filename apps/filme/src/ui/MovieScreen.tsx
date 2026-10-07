@@ -14,6 +14,7 @@ import {
   ScoreRing,
   Separator,
   Skeleton,
+  useImageFade,
 } from '@nexo/ui';
 import { useFavorite } from '@nexo/user-data';
 import { useQuery } from '@tanstack/react-query';
@@ -36,7 +37,7 @@ function BackLink({ onImage = false }: { onImage?: boolean }) {
       size="sm"
       className={cn('w-fit', onImage && 'text-on-scrim hover:bg-on-scrim/10 hover:text-on-scrim')}
     >
-      <Link to="/filmes">
+      <Link to="/filmes" viewTransition>
         <ArrowLeft aria-hidden="true" />
         Voltar ao catálogo
       </Link>
@@ -64,14 +65,17 @@ function NotFound() {
 }
 
 /** Mesmo desenho do hero carregado, para não haver salto de layout. */
-function DetailsSkeleton() {
+function DetailsSkeleton({ movieId }: { movieId: number }) {
   return (
     <div aria-busy="true" className="flex flex-col gap-section">
       <span role="status" className="sr-only">
         Carregando filme…
       </span>
       <div className="-mx-gutter -mt-6 flex flex-col gap-6 bg-muted p-gutter pt-14 pb-8 sm:mx-0 sm:mt-0 sm:rounded-2xl sm:p-8 sm:pt-20 md:flex-row md:items-end md:gap-10 md:p-10 md:pt-24">
-        <Skeleton className="aspect-[2/3] w-36 rounded-lg bg-secondary sm:w-44 md:-mb-24 md:w-64 md:shrink-0" />
+        <Skeleton
+          style={{ viewTransitionName: `poster-${String(movieId)}` }}
+          className="aspect-[2/3] w-36 rounded-lg bg-secondary sm:w-44 md:-mb-24 md:w-64 md:shrink-0"
+        />
         <div className="flex flex-1 flex-col gap-3">
           <Skeleton className="h-10 w-3/4 bg-secondary" />
           <Skeleton className="h-5 w-1/3 bg-secondary" />
@@ -108,6 +112,22 @@ function FavoriteToggle({ movie }: { movie: MovieDetails }) {
   );
 }
 
+/** Imagem de fundo do hero: aparece suavemente, já atenuada pelo véu. */
+function Backdrop({ src }: { src: string }) {
+  const fade = useImageFade();
+  return (
+    <img
+      src={src}
+      alt=""
+      width={1280}
+      height={720}
+      decoding="async"
+      {...fade}
+      className="size-full object-cover object-top opacity-0 transition-opacity duration-700 data-loaded:opacity-70"
+    />
+  );
+}
+
 /**
  * Topo do detalhe: imagem de fundo com véu (sempre escuro, nos dois temas),
  * pôster que avança sobre o conteúdo abaixo e os dados principais do filme.
@@ -116,16 +136,7 @@ function Hero({ movie }: { movie: MovieDetails }) {
   return (
     <header className="relative isolate -mx-gutter -mt-6 bg-scrim text-on-scrim sm:mx-0 sm:mt-0 sm:rounded-2xl">
       <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden sm:rounded-2xl">
-        {movie.backdropUrl && (
-          <img
-            src={movie.backdropUrl}
-            alt=""
-            width={1280}
-            height={720}
-            decoding="async"
-            className="size-full object-cover object-top opacity-70"
-          />
-        )}
+        {movie.backdropUrl && <Backdrop src={movie.backdropUrl} />}
         {/* Véu: garante o contraste do texto sobre qualquer imagem. */}
         <div className="absolute inset-0 bg-linear-to-t from-scrim via-scrim/85 to-scrim/30 md:bg-linear-to-r md:from-scrim md:via-scrim/80 md:to-scrim/10" />
       </div>
@@ -138,6 +149,7 @@ function Hero({ movie }: { movie: MovieDetails }) {
             title={movie.title}
             size="detail"
             eager
+            transitionName={`poster-${String(movie.id)}`}
             className="w-36 shadow-lg ring-1 ring-on-scrim/15 sm:w-44 md:relative md:z-10 md:-mb-24 md:w-64 md:shrink-0"
           />
 
@@ -279,7 +291,7 @@ export function MovieScreen() {
   });
 
   if (movieId === null) return <NotFound />;
-  if (query.isPending) return <DetailsSkeleton />;
+  if (query.isPending) return <DetailsSkeleton movieId={movieId} />;
   if (query.isError) {
     const error = query.error;
     if (isTmdbError(error) && error.kind === 'not-found') return <NotFound />;

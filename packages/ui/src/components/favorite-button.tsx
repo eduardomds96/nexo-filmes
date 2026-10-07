@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 import { cn } from '../lib/utils';
 import { buttonVariants } from './button';
-import { Spinner } from './primitives';
 
 export interface FavoriteButtonProps {
   /** Título do filme, usado no rótulo acessível. */
@@ -28,6 +27,23 @@ function statusMessage(title: string, isFavorite: boolean, isPending: boolean, l
   return isFavorite ? `${title} adicionado aos favoritos.` : `${title} removido dos favoritos.`;
 }
 
+type HeartPhase = 'idle' | 'saving' | 'added' | 'reverted';
+
+function heartPhase(isFavorite: boolean, isPending: boolean, last: LastAction): HeartPhase {
+  if (isPending) return 'saving';
+  if (last === null) return 'idle';
+  const succeeded = (last === 'add') === isFavorite;
+  if (!succeeded) return 'reverted';
+  return last === 'add' ? 'added' : 'idle';
+}
+
+const HEART_ANIMATION: Record<HeartPhase, string> = {
+  idle: '',
+  saving: 'motion-safe:animate-heart-pulse',
+  added: 'motion-safe:animate-heart-pop',
+  reverted: 'motion-safe:animate-heart-shake',
+};
+
 /**
  * Botão de favorito (toggle). Enquanto salva, fica com `aria-disabled` em vez
  * de `disabled`: assim o foco do teclado não se perde, e cliques são ignorados.
@@ -42,6 +58,9 @@ export function FavoriteButton({
   className,
 }: FavoriteButtonProps) {
   const [lastAction, setLastAction] = useState<LastAction>(null);
+  // Cada clique reinicia as animações (a chave do ícone muda).
+  const [clicks, setClicks] = useState(0);
+  const phase = heartPhase(isFavorite, isPending, lastAction);
   const label = isFavorite ? `Remover ${title} dos favoritos` : `Adicionar ${title} aos favoritos`;
 
   return (
@@ -52,10 +71,12 @@ export function FavoriteButton({
         aria-label={label}
         aria-busy={isPending}
         aria-disabled={isPending}
+        data-heart={phase}
         title={label}
         onClick={() => {
           if (isPending) return;
           setLastAction(isFavorite ? 'remove' : 'add');
+          setClicks((n) => n + 1);
           onToggle();
         }}
         className={cn(
@@ -70,11 +91,28 @@ export function FavoriteButton({
           className,
         )}
       >
-        {isPending ? (
-          <Spinner />
-        ) : (
-          <Heart aria-hidden="true" className={cn(isFavorite && 'fill-current')} />
-        )}
+        {/*
+          Salvando: o coração pulsa. Salvo: estala, com um anel que se expande.
+          Falhou: treme e volta ao estado anterior (o leitor de tela ouve o aviso).
+        */}
+        <span className="relative grid place-items-center">
+          <Heart
+            key={`${phase}-${String(clicks)}`}
+            aria-hidden="true"
+            className={cn(
+              'transition-[fill] duration-200',
+              isFavorite && 'fill-current',
+              HEART_ANIMATION[phase],
+            )}
+          />
+          {phase === 'added' && (
+            <span
+              key={clicks}
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-[-6px] rounded-full border-2 border-current opacity-0 motion-safe:animate-heart-burst"
+            />
+          )}
+        </span>
         {appearance === 'full' && (
           <span aria-hidden="true">{isFavorite ? 'Nos favoritos' : 'Favoritar'}</span>
         )}

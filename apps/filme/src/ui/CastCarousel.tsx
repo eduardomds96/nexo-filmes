@@ -1,5 +1,5 @@
 import type { CastMember } from '@nexo/contracts';
-import { Button, cn, initials } from '@nexo/ui';
+import { Button, cn, IMAGE_FADE_CLASSES, initials, useImageFade } from '@nexo/ui';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode, RefObject } from 'react';
@@ -35,6 +35,7 @@ function useScrollEdges(ref: RefObject<HTMLElement | null>) {
 
 function CastPhoto({ member }: { member: CastMember }) {
   const [failed, setFailed] = useState(false);
+  const fade = useImageFade();
   if (member.profileUrl && !failed) {
     return (
       <img
@@ -44,10 +45,11 @@ function CastPhoto({ member }: { member: CastMember }) {
         height={278}
         loading="lazy"
         decoding="async"
+        {...fade}
         onError={() => {
           setFailed(true);
         }}
-        className="aspect-[2/3] w-full rounded-xl bg-muted object-cover"
+        className={cn('aspect-[2/3] w-full rounded-xl bg-muted object-cover', IMAGE_FADE_CLASSES)}
       />
     );
   }

@@ -62,6 +62,8 @@ describe('FavoriteButton', () => {
     expect(button.getAttribute('aria-busy')).toBe('true');
     expect(button.getAttribute('aria-disabled')).toBe('true');
     expect(screen.getByRole('status').textContent).toBe('Salvando Matrix…');
+    // O coração pulsa enquanto salva.
+    expect(button.dataset['heart']).toBe('saving');
 
     await userEvent.click(button);
     expect(onToggle).not.toHaveBeenCalled();
@@ -72,6 +74,7 @@ describe('FavoriteButton', () => {
     await userEvent.click(screen.getByRole('button', { name: /Adicionar Matrix/ }));
     await userEvent.click(screen.getByRole('button', { name: 'concluir' }));
     expect(screen.getByRole('status').textContent).toBe('Matrix adicionado aos favoritos.');
+    expect(screen.getByRole('button', { name: /Remover Matrix/ }).dataset['heart']).toBe('added');
   });
 
   it('anuncia que voltou ao estado anterior quando falha', async () => {
@@ -79,7 +82,10 @@ describe('FavoriteButton', () => {
     await userEvent.click(screen.getByRole('button', { name: /Adicionar Matrix/ }));
     await userEvent.click(screen.getByRole('button', { name: 'concluir' }));
     expect(screen.getByRole('status').textContent).toContain('voltou ao estado anterior');
-    expect(screen.getByRole('button', { name: /Adicionar Matrix/ })).toBeDefined();
+    // Desfeito: o coração treme e volta ao estado anterior.
+    expect(screen.getByRole('button', { name: /Adicionar Matrix/ }).dataset['heart']).toBe(
+      'reverted',
+    );
   });
 });
 
