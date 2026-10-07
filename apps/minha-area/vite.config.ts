@@ -23,6 +23,7 @@ export default defineConfig({
       exposes: {
         './FavoritesPage': './src/expose/FavoritesPage.tsx',
         './DashboardPage': './src/expose/DashboardPage.tsx',
+        './RatingsPage': './src/expose/RatingsPage.tsx',
         './FavoritesCounter': './src/expose/FavoritesCounter.tsx',
       },
       shared: createShared(pkg),

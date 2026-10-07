@@ -74,7 +74,18 @@ export function DashboardScreen() {
     content = (
       <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={Heart} label="Favoritos" value={formatCount(stats.totalFavorites)} />
-        <StatCard icon={Star} label="Filmes avaliados" value={formatCount(stats.totalRated)} />
+        <StatCard
+          icon={Star}
+          label="Filmes avaliados"
+          value={formatCount(stats.totalRated)}
+          hint={
+            stats.totalRated > 0 ? (
+              <Link to="/avaliacoes" className="font-medium text-primary hover:underline">
+                Ver minhas avaliações
+              </Link>
+            ) : undefined
+          }
+        />
         <StatCard
           icon={ChartNoAxesColumn}
           label="Nota média"

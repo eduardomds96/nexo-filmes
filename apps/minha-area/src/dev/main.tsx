@@ -15,6 +15,7 @@ import { createBrowserRouter, Link, Navigate, Outlet, RouterProvider } from 'rea
 import DashboardPage from '../expose/DashboardPage';
 import FavoritesCounter from '../expose/FavoritesCounter';
 import FavoritesPage from '../expose/FavoritesPage';
+import RatingsPage from '../expose/RatingsPage';
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,9 @@ function DevLayout() {
         <span>Minha área rodando isolada ·</span>
         <Link className="underline" to="/favoritos">
           /favoritos
+        </Link>
+        <Link className="underline" to="/avaliacoes">
+          /avaliacoes
         </Link>
         <Link className="underline" to="/painel">
           /painel
@@ -46,6 +50,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <Navigate to="/favoritos" replace /> },
       { path: '/favoritos', element: <FavoritesPage /> },
+      { path: '/avaliacoes', element: <RatingsPage /> },
       { path: '/painel', element: <DashboardPage /> },
       { path: '*', element: <p>Rota fora deste micro-frontend.</p> },
     ],
