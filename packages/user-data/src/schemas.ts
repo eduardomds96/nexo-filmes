@@ -25,12 +25,14 @@ export const favoriteMovieSchema = z.object({
   favoritedAt: z.iso.datetime(),
 });
 
+export const movieSnapshotSchema = favoriteMovieSchema.omit({ favoritedAt: true });
+
 export const ratingSchema = z.object({
   movieId: z.number().int().positive(),
   score: ratingScoreSchema,
   comment: ratingCommentSchema,
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
+  // Opcional na leitura: avaliações antigas não tinham o snapshot do filme.
+  movie: movieSnapshotSchema.nullable().default(null),
 });
-
-export const movieSnapshotSchema = favoriteMovieSchema.omit({ favoritedAt: true });

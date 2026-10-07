@@ -214,6 +214,7 @@ describe('coerência entre cópias da store (remotes sem singleton)', () => {
       comment: '',
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
+      movie: null,
     };
 
     emit('nexo:rating:changed', { movieId: 5, rating }, target);

@@ -104,6 +104,9 @@ export function createLocalUserDataRepository(
     async saveRating(input: RatingInput) {
       const parsed = ratingInputSchema.safeParse(input);
       if (!parsed.success) throw new UserDataError('invalid-input', { cause: parsed.error });
+      const movie =
+        input.movie === undefined ? undefined : movieSnapshotSchema.safeParse(input.movie);
+      if (movie && !movie.success) throw new UserDataError('invalid-input', { cause: movie.error });
 
       await wait();
       assertWritable(input.movieId);
@@ -117,6 +120,7 @@ export function createLocalUserDataRepository(
         comment: parsed.data.comment?.trim() ?? '',
         createdAt: previous?.createdAt ?? timestamp,
         updatedAt: timestamp,
+        movie: movie?.data ?? previous?.movie ?? null,
       };
       // No máximo uma avaliação por filme: salvar de novo substitui a anterior.
       writeList(storage, STORAGE_KEYS.ratings, [

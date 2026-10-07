@@ -87,6 +87,7 @@ describe('avaliações', () => {
       comment: 'Ótimo',
       createdAt: '2026-02-01T10:00:00.000Z',
       updatedAt: '2026-02-01T10:00:00.000Z',
+      movie: null,
     });
     await expect(repository.getRating(550)).resolves.toEqual(saved);
     await expect(repository.getRating(1)).resolves.toBeNull();
@@ -106,6 +107,50 @@ describe('avaliações', () => {
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-03-01T00:00:00.000Z',
     });
+  });
+
+  it('guarda o snapshot do filme junto da avaliação', async () => {
+    const { repository } = testRepository();
+    const movie = snapshot(550, { title: 'Clube da Luta', posterUrl: 'https://img/550.jpg' });
+
+    const saved = await repository.saveRating({ movieId: 550, score: 9, movie });
+
+    expect(saved.movie).toEqual(movie);
+    expect((await repository.listRatings())[0]?.movie).toEqual(movie);
+  });
+
+  it('salvar sem snapshot mantém o snapshot que a avaliação já tinha', async () => {
+    const { repository } = testRepository();
+    const movie = snapshot(7, { title: 'Sete' });
+    await repository.saveRating({ movieId: 7, score: 6, movie });
+
+    const updated = await repository.saveRating({ movieId: 7, score: 8 });
+
+    expect(updated.movie).toEqual(movie);
+  });
+
+  it('lê avaliações antigas, gravadas sem snapshot, com movie null', async () => {
+    const { repository, storage } = testRepository();
+    storage.setItem(
+      STORAGE_KEYS.ratings,
+      JSON.stringify([
+        {
+          movieId: 1,
+          score: 7,
+          comment: '',
+          createdAt: '2026-01-01T00:00:00.000Z',
+          updatedAt: '2026-01-01T00:00:00.000Z',
+        },
+      ]),
+    );
+    await expect(repository.getRating(1)).resolves.toMatchObject({ score: 7, movie: null });
+  });
+
+  it('rejeita snapshot de filme inválido', async () => {
+    const { repository } = testRepository();
+    await expect(
+      repository.saveRating({ movieId: 1, score: 5, movie: { ...snapshot(1), title: 3 } as never }),
+    ).rejects.toMatchObject({ kind: 'invalid-input' });
   });
 
   it('rejeita avaliação fora das regras', async () => {
