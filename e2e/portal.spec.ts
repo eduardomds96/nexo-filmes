@@ -171,6 +171,15 @@ test.describe('avaliação', () => {
     await page.getByRole('button', { name: 'Salvar avaliação' }).click();
     await expect(page.getByRole('button', { name: 'Atualizar avaliação' })).toBeVisible();
 
+    // A avaliação aparece em "Minhas avaliações", com link de volta ao formulário.
+    await page.getByRole('link', { name: 'Ver todas as minhas avaliações' }).click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Minhas avaliações' })).toBeVisible();
+    await expect(page.getByText('1 filme avaliado · média 8,5')).toBeVisible();
+    await expect(page.getByText('Muito bom')).toBeVisible();
+    await page.getByRole('link', { name: 'Editar avaliação de Matrix' }).click();
+    await expect(page).toHaveURL(/\/filme\/603#avaliacao$/);
+    await expect(page.getByLabel('Nota')).toBeFocused();
+
     await page
       .getByRole('navigation', { name: 'Principal' })
       .getByRole('link', { name: 'Painel' })
@@ -182,7 +191,14 @@ test.describe('avaliação', () => {
 test.describe('responsivo e teclado', () => {
   test('nenhuma tela tem rolagem horizontal em 360 px', async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 780 });
-    for (const path of ['/filmes', '/filme/598', '/favoritos', '/painel', '/nao-existe']) {
+    for (const path of [
+      '/filmes',
+      '/filme/598',
+      '/favoritos',
+      '/avaliacoes',
+      '/painel',
+      '/nao-existe',
+    ]) {
       await page.goto(path);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       const overflow = await page.evaluate(

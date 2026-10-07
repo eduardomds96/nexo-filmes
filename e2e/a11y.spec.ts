@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const PAGES = ['/filmes', '/filme/598', '/favoritos', '/painel', '/nao-existe'];
+const PAGES = ['/filmes', '/filme/598', '/favoritos', '/avaliacoes', '/painel', '/nao-existe'];
 
 for (const colorScheme of ['light', 'dark'] as const) {
   test.describe(`acessibilidade (tema ${colorScheme === 'light' ? 'claro' : 'escuro'})`, () => {

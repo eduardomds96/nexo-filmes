@@ -14,6 +14,7 @@ ligados por Module Federation.
 | Catálogo     | `/filmes?q=&genero=&pagina=` | `catalogo`     |
 | Detalhe      | `/filme/:id`                 | `filme`        |
 | Favoritos    | `/favoritos`                 | `minha-area`   |
+| Avaliações   | `/avaliacoes?ordem=`         | `minha-area`   |
 | Painel       | `/painel`                    | `minha-area`   |
 | Contador     | cabeçalho de todas as telas  | `minha-area`   |
 | Layout e 404 | `/`, `*`                     | `shell`        |
@@ -30,7 +31,7 @@ flowchart TB
     end
     Catalogo["catalogo :3001<br/>CatalogPage"]
     Filme["filme :3002<br/>MoviePage"]
-    MinhaArea["minha-area :3003<br/>FavoritesPage, DashboardPage,<br/>FavoritesCounter"]
+    MinhaArea["minha-area :3003<br/>FavoritesPage, RatingsPage,<br/>DashboardPage, FavoritesCounter"]
     Store[("@nexo/user-data<br/>store singleton")]
     LS[("localStorage<br/>nexo:v1:*")]
     Events{{"window: nexo:favorites:changed<br/>nexo:rating:changed · storage"}}
@@ -50,7 +51,7 @@ nexo-filmes/
 │  ├─ shell/              host: layout, rotas de topo, carregamento isolado dos remotes
 │  ├─ catalogo/           /filmes
 │  ├─ filme/              /filme/:id (detalhe + avaliação)
-│  └─ minha-area/         /favoritos, /painel e o contador do cabeçalho
+│  └─ minha-area/         /favoritos, /avaliacoes, /painel e o contador do cabeçalho
 ├─ packages/              bibliotecas (nunca importam apps)
 │  ├─ contracts/          só tipos: domínio, eventos, rotas, módulos expostos
 │  ├─ tmdb/               cliente HTTP, schemas Zod, adapter TMDB → domínio, TMDB simulada
