@@ -24,6 +24,40 @@
   color: var(--on-scrim);
 }
 
+/*
+ * Faixa com rolagem horizontal: as bordas esmaecem só do lado em que há mais
+ * conteúdo (atributos data-overflow-start/end, ver ScrollRow). Os tamanhos
+ * são @property para o esmaecimento entrar e sair com transição.
+ */
+@property --scroll-fade-start {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@property --scroll-fade-end {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+@utility scroll-fade {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--scroll-fade-start),
+    #000 calc(100% - var(--scroll-fade-end)),
+    transparent
+  );
+  transition:
+    --scroll-fade-start 250ms ease-out,
+    --scroll-fade-end 250ms ease-out;
+  &[data-overflow-start] {
+    --scroll-fade-start: 3.5rem;
+  }
+  &[data-overflow-end] {
+    --scroll-fade-end: 3.5rem;
+  }
+}
+
 @theme inline {
   --font-sans:
     'Geist Variable', ui-sans-serif, system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,

@@ -21,6 +21,8 @@ export { ScoreRing } from './components/score-ring';
 export type { ScoreRingProps } from './components/score-ring';
 export type { PaginationLinkProps, PaginationProps } from './components/pagination';
 export { Badge, Card, Separator, Skeleton, Spinner, VisuallyHidden } from './components/primitives';
+export { ScrollRow } from './components/scroll-row';
+export type { ScrollRowProps } from './components/scroll-row';
 export { StarRatingInput } from './components/star-rating-input';
 export type { StarRatingInputHandle, StarRatingInputProps } from './components/star-rating-input';
 export { EmptyState, ErrorState } from './components/states';
@@ -35,4 +37,6 @@ export {
   plural,
 } from './lib/format';
 export { IMAGE_FADE_CLASSES, useImageFade } from './lib/use-image-fade';
+export { scrollBehavior, useScrollEdges } from './lib/use-scroll-edges';
+export type { ScrollEdges } from './lib/use-scroll-edges';
 export { cn } from './lib/utils';

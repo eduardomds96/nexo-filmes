@@ -7,6 +7,7 @@ import { FavoriteButton } from './favorite-button';
 import { MoviePoster } from './movie-poster';
 import { PageHeading } from './page-heading';
 import { visiblePages } from './pagination';
+import { ScrollRow } from './scroll-row';
 import { StarRatingInput } from './star-rating-input';
 
 afterEach(() => {
@@ -199,5 +200,34 @@ describe('StarRatingInput', () => {
     expect(screen.getByRole('radio', { checked: true }).getAttribute('aria-label')).toBe(
       '10 de 10',
     );
+  });
+});
+
+describe('ScrollRow', () => {
+  it('esmaece e mostra a seta só do lado em que há mais itens', () => {
+    // jsdom não calcula layout: 500 px de conteúdo numa faixa de 200 px.
+    vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(500);
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(200);
+    render(
+      <ScrollRow previousLabel="Anteriores" nextLabel="Mais">
+        <span>A</span>
+        <span>B</span>
+      </ScrollRow>,
+    );
+    const scroller = screen.getByText('A').parentElement!;
+    const previous = screen.getByRole('button', { name: 'Anteriores' });
+    const next = screen.getByRole('button', { name: 'Mais' });
+
+    expect(scroller.hasAttribute('data-overflow-start')).toBe(false);
+    expect(scroller.hasAttribute('data-overflow-end')).toBe(true);
+    expect(previous.className).toContain('opacity-0');
+    expect(next.className).toContain('opacity-100');
+
+    scroller.scrollLeft = 300;
+    fireEvent.scroll(scroller);
+    expect(scroller.hasAttribute('data-overflow-start')).toBe(true);
+    expect(scroller.hasAttribute('data-overflow-end')).toBe(false);
+    expect(previous.className).toContain('opacity-100');
+    expect(next.className).toContain('opacity-0');
   });
 });
