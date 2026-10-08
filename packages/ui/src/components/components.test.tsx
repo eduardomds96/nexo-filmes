@@ -88,6 +88,33 @@ describe('FavoriteButton', () => {
 });
 
 describe('MoviePoster', () => {
+  it('com srcSet, informa a largura exibida para o navegador escolher a imagem', () => {
+    render(<MoviePoster src="https://img/w342/x.jpg" srcSet="a 185w, b 342w" title="Matrix" />);
+    const img = screen.getByRole('img', { name: 'Pôster do filme Matrix' });
+    expect(img.getAttribute('srcset')).toBe('a 185w, b 342w');
+    expect(img.getAttribute('sizes')).toContain('47vw');
+  });
+
+  it('sem srcSet não envia sizes', () => {
+    render(<MoviePoster src="https://img/w342/x.jpg" title="Matrix" />);
+    expect(screen.getByRole('img').hasAttribute('sizes')).toBe(false);
+  });
+
+  it('com priority carrega já, com prioridade alta e sem o efeito de aparecer', () => {
+    render(<MoviePoster src="https://img/x.jpg" title="Matrix" priority />);
+    const img = screen.getByRole('img');
+    expect(img.getAttribute('loading')).toBe('eager');
+    expect(img.getAttribute('fetchpriority')).toBe('high');
+    expect(img.className).not.toContain('opacity-0');
+  });
+
+  it('sem priority carrega sob demanda e aparece suavemente', () => {
+    render(<MoviePoster src="https://img/x.jpg" title="Matrix" />);
+    const img = screen.getByRole('img');
+    expect(img.getAttribute('loading')).toBe('lazy');
+    expect(img.className).toContain('opacity-0');
+  });
+
   it('renderiza a imagem com alt, lazy e dimensões fixas', () => {
     render(<MoviePoster src="https://img/x.jpg" title="Matrix" />);
     const img = screen.getByRole('img', { name: 'Pôster do filme Matrix' });

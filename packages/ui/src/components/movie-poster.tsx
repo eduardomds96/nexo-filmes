@@ -9,12 +9,25 @@ const SIZES = {
   detail: { width: 500, height: 750 },
 } as const;
 
+/** Largura exibida em cada tela, para o navegador escolher a imagem do `srcSet`. */
+const DEFAULT_SIZES: Record<keyof typeof SIZES, string> = {
+  list: '(min-width: 1280px) 240px, (min-width: 1024px) 23vw, (min-width: 640px) 31vw, 47vw',
+  detail: '(min-width: 768px) 256px, (min-width: 640px) 176px, 144px',
+};
+
 export interface MoviePosterProps {
   readonly src: string | null;
   readonly title: string;
   readonly size?: keyof typeof SIZES;
-  /** Carregar já (acima da dobra) em vez de sob demanda. */
-  readonly eager?: boolean;
+  /** Mesma imagem em várias larguras (ex.: `tmdbPosterSrcSet`). */
+  readonly srcSet?: string | undefined;
+  /** Largura exibida; o padrão segue o `size`. */
+  readonly sizes?: string | undefined;
+  /**
+   * Pôster acima da dobra, candidato a LCP: carrega já, com prioridade alta e
+   * sem o efeito de aparecer suave, que atrasaria a primeira pintura.
+   */
+  readonly priority?: boolean;
   /**
    * Nome de View Transition (ex.: `poster-550`): o mesmo nome na lista e no
    * detalhe faz o pôster viajar de um para o outro na navegação.
@@ -28,7 +41,9 @@ export function MoviePoster({
   src,
   title,
   size = 'list',
-  eager = false,
+  srcSet,
+  sizes,
+  priority = false,
   transitionName,
   className,
 }: MoviePosterProps) {
@@ -57,14 +72,16 @@ export function MoviePoster({
   return (
     <img
       src={src}
+      {...(srcSet ? { srcSet, sizes: sizes ?? DEFAULT_SIZES[size] } : {})}
       alt={`Pôster do filme ${title}`}
       width={width}
       height={height}
-      loading={eager ? 'eager' : 'lazy'}
-      decoding="async"
-      {...fade}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
+      decoding={priority ? 'sync' : 'async'}
+      {...(priority ? {} : fade)}
       style={style}
-      className={cn(classes, IMAGE_FADE_CLASSES)}
+      className={cn(classes, !priority && IMAGE_FADE_CLASSES)}
       onError={() => {
         setFailedSrc(src);
       }}

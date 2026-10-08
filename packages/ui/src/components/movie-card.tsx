@@ -22,7 +22,9 @@ export interface MovieCardProps {
   readonly LinkComponent: ComponentType<MovieCardLinkProps>;
   readonly details?: ReactNode;
   readonly action?: ReactNode;
-  readonly eagerPoster?: boolean;
+  readonly posterSrcSet?: string | undefined;
+  /** Pôster acima da dobra (ver `MoviePoster`). */
+  readonly priorityPoster?: boolean;
   /** Nome de View Transition do pôster, igual ao do detalhe (ex.: `poster-550`). */
   readonly transitionName?: string;
 }
@@ -42,7 +44,8 @@ export function MovieCard({
   LinkComponent,
   details,
   action,
-  eagerPoster = false,
+  posterSrcSet,
+  priorityPoster = false,
   transitionName,
 }: MovieCardProps) {
   return (
@@ -51,7 +54,8 @@ export function MovieCard({
         <MoviePoster
           src={posterUrl}
           title={title}
-          eager={eagerPoster}
+          srcSet={posterSrcSet}
+          priority={priorityPoster}
           transitionName={transitionName}
           className="rounded-none transition-transform duration-500 ease-out-soft can-hover:group-hover:scale-[1.04]"
         />
