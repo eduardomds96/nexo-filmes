@@ -1,5 +1,5 @@
 import type { Genre } from '@nexo/contracts';
-import { cn, Input, Label, Skeleton, Spinner } from '@nexo/ui';
+import { cn, Input, Label, ScrollRow, Skeleton, Spinner } from '@nexo/ui';
 import { Search } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import type { ChangeEvent, ReactNode } from 'react';
@@ -122,9 +122,12 @@ export function CatalogFilters({
 
       <fieldset className="min-w-0">
         <legend className="sr-only">Gênero</legend>
-        <div
-          ref={chipsRef}
-          className="-mx-gutter flex snap-x scroll-px-gutter gap-2 overflow-x-auto px-gutter py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        <ScrollRow
+          scrollerRef={chipsRef}
+          hint
+          previousLabel="Gêneros anteriores"
+          nextLabel="Mais gêneros"
+          scrollerClassName="-mx-gutter snap-x scroll-px-gutter gap-2 px-gutter py-1"
         >
           <GenreChip value={null} checked={genreId === null} onSelect={onGenreChange}>
             Todos
@@ -148,7 +151,7 @@ export function CatalogFilters({
             Array.from({ length: 6 }, (_, index) => (
               <Skeleton key={index} className="h-9 w-24 shrink-0 rounded-full" />
             ))}
-        </div>
+        </ScrollRow>
         {genresStatus === 'error' && (
           <p className="text-sm text-destructive">Não foi possível carregar os gêneros.</p>
         )}

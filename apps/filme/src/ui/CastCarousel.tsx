@@ -1,37 +1,18 @@
 import type { CastMember } from '@nexo/contracts';
-import { Button, cn, IMAGE_FADE_CLASSES, initials, useImageFade } from '@nexo/ui';
+import {
+  Button,
+  cn,
+  IMAGE_FADE_CLASSES,
+  initials,
+  scrollBehavior,
+  useImageFade,
+  useScrollEdges,
+} from '@nexo/ui';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ReactNode, RefObject } from 'react';
+import { useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 
 const LIST_ID = 'elenco-lista';
-
-/** Habilita os botões só quando há para onde rolar. */
-function useScrollEdges(ref: RefObject<HTMLElement | null>) {
-  const [edges, setEdges] = useState({ start: true, end: true });
-
-  const update = useCallback(() => {
-    const el = ref.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    setEdges({ start: el.scrollLeft <= 1, end: el.scrollLeft >= max - 1 });
-  }, [ref]);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    update();
-    el.addEventListener('scroll', update, { passive: true });
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update);
-    observer?.observe(el);
-    return () => {
-      el.removeEventListener('scroll', update);
-      observer?.disconnect();
-    };
-  }, [ref, update]);
-
-  return edges;
-}
 
 function CastPhoto({ member }: { member: CastMember }) {
   const [failed, setFailed] = useState(false);
@@ -80,8 +61,7 @@ export function CastCarousel({
   const scroll = (direction: 1 | -1) => {
     const el = listRef.current;
     if (!el) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollBy({ left: direction * el.clientWidth * 0.8, behavior: reduce ? 'auto' : 'smooth' });
+    el.scrollBy({ left: direction * el.clientWidth * 0.8, behavior: scrollBehavior() });
   };
 
   return (
@@ -124,8 +104,10 @@ export function CastCarousel({
         // A lista rola na horizontal: precisa receber foco para rolar pelo teclado (WCAG 2.1.1).
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         tabIndex={0}
+        data-overflow-start={edges.start ? undefined : ''}
+        data-overflow-end={edges.end ? undefined : ''}
         aria-labelledby="elenco"
-        className="-mx-gutter flex snap-x snap-mandatory scroll-px-gutter gap-3 overflow-x-auto overscroll-x-contain px-gutter pb-3 [scrollbar-width:thin] focus-visible:outline-offset-[-3px] sm:mx-0 sm:scroll-px-0 sm:px-0 sm:gap-4"
+        className="scroll-fade -mx-gutter flex snap-x snap-mandatory scroll-px-gutter gap-3 overflow-x-auto overscroll-x-contain px-gutter pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-offset-[-3px] sm:mx-0 sm:scroll-px-0 sm:px-0 sm:gap-4"
       >
         {cast.map((member) => (
           <li key={member.id} className="flex w-28 shrink-0 snap-start flex-col gap-2 sm:w-32">
