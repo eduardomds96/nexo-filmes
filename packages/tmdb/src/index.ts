@@ -20,5 +20,10 @@ export {
   TmdbError,
 } from './errors';
 export type { TmdbErrorKind } from './errors';
-export { tmdbImageUrl, TMDB_IMAGE_BASE_URL } from './images';
+export {
+  POSTER_SRCSET_WIDTHS,
+  tmdbImageUrl,
+  TMDB_IMAGE_BASE_URL,
+  tmdbPosterSrcSet,
+} from './images';
 export type { ImageSize } from './images';

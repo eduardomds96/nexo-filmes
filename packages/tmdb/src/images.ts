@@ -10,3 +10,17 @@ export function tmdbImageUrl(path: string | null, size: ImageSize): string | nul
   if (path === null || !path.startsWith('/')) return null;
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 }
+
+/** Larguras oferecidas no `srcset` dos pôsteres: o navegador baixa a menor que serve. */
+export const POSTER_SRCSET_WIDTHS = [185, 342, 500] as const;
+
+const TMDB_IMAGE_PATTERN = /^https:\/\/image\.tmdb\.org\/t\/p\/w\d+(\/.+)$/;
+
+/** `srcset` de um pôster da TMDB, ou `undefined` para URLs que não são da TMDB. */
+export function tmdbPosterSrcSet(url: string | null): string | undefined {
+  const path = url === null ? undefined : TMDB_IMAGE_PATTERN.exec(url)?.[1];
+  if (path === undefined) return undefined;
+  return POSTER_SRCSET_WIDTHS.map(
+    (width) => `${TMDB_IMAGE_BASE_URL}/w${String(width)}${path} ${String(width)}w`,
+  ).join(', ');
+}
