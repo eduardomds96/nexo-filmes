@@ -1,4 +1,5 @@
 import type { Movie } from '@nexo/contracts';
+import { tmdbPosterSrcSet } from '@nexo/tmdb';
 import { Badge, FavoriteButton, MovieCard, TmdbScore } from '@nexo/ui';
 import { useFavorite } from '@nexo/user-data';
 import { useMemo } from 'react';
@@ -7,7 +8,7 @@ import { toast } from 'sonner';
 import { toSnapshot } from '../domain/catalog-request';
 import { RouterLink } from './RouterLink';
 
-export function CatalogMovieCard({ movie, eager }: { movie: Movie; eager: boolean }) {
+export function CatalogMovieCard({ movie, priority }: { movie: Movie; priority: boolean }) {
   const snapshot = useMemo(() => toSnapshot(movie), [movie]);
   const favorite = useFavorite(snapshot, {
     onReverted: () => {
@@ -24,7 +25,8 @@ export function CatalogMovieCard({ movie, eager }: { movie: Movie; eager: boolea
       posterUrl={movie.posterUrl}
       href={`/filme/${String(movie.id)}`}
       LinkComponent={RouterLink}
-      eagerPoster={eager}
+      posterSrcSet={tmdbPosterSrcSet(movie.posterUrl)}
+      priorityPoster={priority}
       transitionName={`poster-${String(movie.id)}`}
       action={
         <FavoriteButton

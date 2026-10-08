@@ -1,4 +1,5 @@
 import type { FavoriteMovie } from '@nexo/contracts';
+import { tmdbPosterSrcSet } from '@nexo/tmdb';
 import {
   Badge,
   Button,
@@ -41,9 +42,11 @@ function UserScore({ score }: { score: number | null }) {
 
 function FavoriteCard({
   movie,
+  priority,
   onRemoved,
 }: {
   movie: FavoriteWithRating;
+  priority: boolean;
   onRemoved: (movie: FavoriteMovie) => void;
 }) {
   const favorite = useFavorite(movie, {
@@ -59,6 +62,8 @@ function FavoriteCard({
       title={movie.title}
       year={movie.year}
       posterUrl={movie.posterUrl}
+      posterSrcSet={tmdbPosterSrcSet(movie.posterUrl)}
+      priorityPoster={priority}
       href={`/filme/${String(movie.id)}`}
       LinkComponent={RouterLink}
       transitionName={`poster-${String(movie.id)}`}
@@ -149,9 +154,9 @@ export function FavoritesScreen() {
   } else {
     content = (
       <MovieGrid>
-        {items.map((movie) => (
+        {items.map((movie, index) => (
           <li key={movie.id}>
-            <FavoriteCard movie={movie} onRemoved={handleRemoved} />
+            <FavoriteCard movie={movie} priority={index < 4} onRemoved={handleRemoved} />
           </li>
         ))}
       </MovieGrid>

@@ -1,5 +1,5 @@
 import type { MovieDetails } from '@nexo/contracts';
-import { isTmdbError } from '@nexo/tmdb';
+import { isTmdbError, tmdbPosterSrcSet } from '@nexo/tmdb';
 import {
   Button,
   cn,
@@ -147,7 +147,8 @@ function Hero({ movie }: { movie: MovieDetails }) {
             src={movie.posterUrl}
             title={movie.title}
             size="detail"
-            eager
+            srcSet={tmdbPosterSrcSet(movie.posterUrl)}
+            priority
             transitionName={`poster-${String(movie.id)}`}
             className="w-36 shadow-lg ring-1 ring-on-scrim/15 sm:w-44 md:relative md:z-10 md:-mb-24 md:w-64 md:shrink-0"
           />

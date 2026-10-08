@@ -181,7 +181,7 @@ export function CatalogScreen() {
           <MovieGrid className={isRefreshing ? 'opacity-60 transition-opacity' : undefined}>
             {data.items.map((movie, index) => (
               <li key={movie.id}>
-                <CatalogMovieCard movie={movie} eager={index < 4} />
+                <CatalogMovieCard movie={movie} priority={index < 4} />
               </li>
             ))}
           </MovieGrid>

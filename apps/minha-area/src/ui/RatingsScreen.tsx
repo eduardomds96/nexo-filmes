@@ -14,6 +14,7 @@ import {
   Spinner,
 } from '@nexo/ui';
 import { useRatings, useUserDataStatus, useUserDataStore } from '@nexo/user-data';
+import { tmdbPosterSrcSet } from '@nexo/tmdb';
 import { useQuery } from '@tanstack/react-query';
 import { MessageSquareText, Pencil, Star, Trash2 } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -90,7 +91,12 @@ function RatingCard({ rating, onDeleted }: { rating: Rating; onDeleted: (title: 
   return (
     <Card className="flex-row gap-4 p-3 sm:p-4">
       <Link to={href} tabIndex={-1} aria-hidden="true" className="w-20 shrink-0 sm:w-24">
-        <MoviePoster src={movie?.posterUrl ?? null} title={title} />
+        <MoviePoster
+          src={movie?.posterUrl ?? null}
+          srcSet={tmdbPosterSrcSet(movie?.posterUrl ?? null)}
+          sizes="96px"
+          title={title}
+        />
       </Link>
 
       <div className="flex min-w-0 flex-1 flex-col gap-2">
