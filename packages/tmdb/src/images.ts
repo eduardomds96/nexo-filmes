@@ -11,7 +11,6 @@ export function tmdbImageUrl(path: string | null, size: ImageSize): string | nul
   return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 }
 
-/** Larguras oferecidas no `srcset` dos pôsteres: o navegador baixa a menor que serve. */
 export const POSTER_SRCSET_WIDTHS = [185, 342, 500] as const;
 
 const TMDB_IMAGE_PATTERN = /^https:\/\/image\.tmdb\.org\/t\/p\/w\d+(\/.+)$/;

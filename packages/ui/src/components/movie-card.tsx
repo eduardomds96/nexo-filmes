@@ -23,7 +23,6 @@ export interface MovieCardProps {
   readonly details?: ReactNode;
   readonly action?: ReactNode;
   readonly posterSrcSet?: string | undefined;
-  /** Pôster acima da dobra (ver `MoviePoster`). */
   readonly priorityPoster?: boolean;
   /** Nome de View Transition do pôster, igual ao do detalhe (ex.: `poster-550`). */
   readonly transitionName?: string;

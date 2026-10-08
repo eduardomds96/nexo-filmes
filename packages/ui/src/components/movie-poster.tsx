@@ -9,7 +9,6 @@ const SIZES = {
   detail: { width: 500, height: 750 },
 } as const;
 
-/** Largura exibida em cada tela, para o navegador escolher a imagem do `srcSet`. */
 const DEFAULT_SIZES: Record<keyof typeof SIZES, string> = {
   list: '(min-width: 1280px) 240px, (min-width: 1024px) 23vw, (min-width: 640px) 31vw, 47vw',
   detail: '(min-width: 768px) 256px, (min-width: 640px) 176px, 144px',
@@ -19,9 +18,7 @@ export interface MoviePosterProps {
   readonly src: string | null;
   readonly title: string;
   readonly size?: keyof typeof SIZES;
-  /** Mesma imagem em várias larguras (ex.: `tmdbPosterSrcSet`). */
   readonly srcSet?: string | undefined;
-  /** Largura exibida; o padrão segue o `size`. */
   readonly sizes?: string | undefined;
   /**
    * Pôster acima da dobra, candidato a LCP: carrega já, com prioridade alta e
