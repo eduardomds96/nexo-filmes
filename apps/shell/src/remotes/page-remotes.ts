@@ -6,7 +6,6 @@ import { getRemoteModule } from './remote-loader';
 export interface PageRemote {
   readonly path: string;
   readonly id: RemoteModuleId;
-  /** Nome da área na mensagem de erro (ex.: "o catálogo"). */
   readonly areaLabel: string;
 }
 
