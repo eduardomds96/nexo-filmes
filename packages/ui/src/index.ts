@@ -21,6 +21,8 @@ export { ScoreRing } from './components/score-ring';
 export type { ScoreRingProps } from './components/score-ring';
 export type { PaginationLinkProps, PaginationProps } from './components/pagination';
 export { Badge, Card, Separator, Skeleton, Spinner, VisuallyHidden } from './components/primitives';
+export { ChoiceChip } from './components/choice-chip';
+export type { ChoiceChipProps } from './components/choice-chip';
 export { ScrollRow } from './components/scroll-row';
 export type { ScrollRowProps } from './components/scroll-row';
 export { StarRatingInput } from './components/star-rating-input';
