@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { ComponentProps } from 'react';
 
+import { APP_DESCRIPTION, setMetaDescription, setNoIndex } from '../lib/document-meta';
 import { cn } from '../lib/utils';
 
 export const APP_NAME = 'Nexo Filmes';
@@ -11,6 +12,9 @@ const BOOT_FLAG = 'nexoBooted';
 export interface PageHeadingProps extends ComponentProps<'h1'> {
   /** Título da aba, sem o nome do produto (ex.: "Favoritos"). */
   readonly documentTitle: string;
+  /** Descrição para buscadores; sem ela, vale a descrição geral do produto. */
+  readonly description?: string | undefined;
+  readonly noIndex?: boolean;
 }
 
 /**
@@ -19,12 +23,24 @@ export interface PageHeadingProps extends ComponentProps<'h1'> {
  * a nova página. Na carga inicial o foco fica no início do documento, para
  * que o link "Pular para o conteúdo" continue sendo o primeiro.
  */
-export function PageHeading({ documentTitle, className, children, ...props }: PageHeadingProps) {
+export function PageHeading({
+  documentTitle,
+  description,
+  noIndex = false,
+  className,
+  children,
+  ...props
+}: PageHeadingProps) {
   const ref = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     document.title = documentTitle ? `${documentTitle} · ${APP_NAME}` : APP_NAME;
   }, [documentTitle]);
+
+  useEffect(() => {
+    setMetaDescription(description ?? APP_DESCRIPTION);
+    setNoIndex(noIndex);
+  }, [description, noIndex]);
 
   useEffect(() => {
     const root = document.documentElement;

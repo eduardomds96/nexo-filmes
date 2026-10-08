@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { FavoriteButton } from './favorite-button';
 import { MoviePoster } from './movie-poster';
+import { APP_DESCRIPTION } from '../lib/document-meta';
 import { PageHeading } from './page-heading';
 import { visiblePages } from './pagination';
 import { ScrollRow } from './scroll-row';
@@ -137,6 +138,22 @@ describe('MoviePoster', () => {
 });
 
 describe('PageHeading', () => {
+  it('atualiza a descrição e marca noindex quando pedido', () => {
+    const { rerender } = render(
+      <PageHeading documentTitle="Favoritos" description="Seus filmes" noIndex>
+        Favoritos
+      </PageHeading>,
+    );
+    const meta = (name: string) =>
+      document.head.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+    expect(meta('description')?.content).toBe('Seus filmes');
+    expect(meta('robots')?.content).toBe('noindex');
+
+    rerender(<PageHeading documentTitle="Filmes">Filmes</PageHeading>);
+    expect(meta('description')?.content).toBe(APP_DESCRIPTION);
+    expect(meta('robots')).toBeNull();
+  });
+
   it('atualiza document.title', () => {
     render(<PageHeading documentTitle="Favoritos">Seus favoritos</PageHeading>);
     expect(document.title).toBe('Favoritos · Nexo Filmes');

@@ -39,4 +39,5 @@ export {
 export { IMAGE_FADE_CLASSES, useImageFade } from './lib/use-image-fade';
 export { scrollBehavior, useScrollEdges } from './lib/use-scroll-edges';
 export type { ScrollEdges } from './lib/use-scroll-edges';
+export { APP_DESCRIPTION, toMetaDescription } from './lib/document-meta';
 export { cn } from './lib/utils';
