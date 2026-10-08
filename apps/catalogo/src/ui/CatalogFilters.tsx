@@ -1,5 +1,5 @@
 import type { Genre } from '@nexo/contracts';
-import { cn, Input, Label, ScrollRow, Skeleton, Spinner } from '@nexo/ui';
+import { ChoiceChip, cn, Input, Label, ScrollRow, Skeleton, Spinner } from '@nexo/ui';
 import { Search } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import type { ChangeEvent, ReactNode } from 'react';
@@ -28,21 +28,16 @@ function GenreChip({
   children: ReactNode;
 }) {
   return (
-    <label className="relative shrink-0 snap-start" data-checked={checked || undefined}>
-      <input
-        type="radio"
-        name="genero"
-        value={value === null ? '' : String(value)}
-        checked={checked}
-        onChange={() => {
-          onSelect(value);
-        }}
-        className="peer sr-only"
-      />
-      <span className="inline-flex h-9 cursor-pointer items-center rounded-full border bg-card px-4 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors peer-checked:border-primary peer-checked:bg-primary peer-checked:text-primary-foreground peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring hover:border-input hover:text-foreground peer-checked:hover:text-primary-foreground">
-        {children}
-      </span>
-    </label>
+    <ChoiceChip
+      name="genero"
+      value={value === null ? '' : String(value)}
+      checked={checked}
+      onSelect={() => {
+        onSelect(value);
+      }}
+    >
+      {children}
+    </ChoiceChip>
   );
 }
 
