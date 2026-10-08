@@ -234,7 +234,9 @@ export function RatingsScreen() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeading documentTitle="Minhas avaliações">Minhas avaliações</PageHeading>
+      <PageHeading documentTitle="Minhas avaliações" noIndex>
+        Minhas avaliações
+      </PageHeading>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <p ref={summaryRef} tabIndex={-1} className="text-muted-foreground">

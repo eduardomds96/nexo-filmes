@@ -40,7 +40,7 @@ export function NotFoundPage() {
         <p className="text-sm font-medium tracking-widest text-highlight uppercase">
           Página não encontrada
         </p>
-        <PageHeading documentTitle="Página não encontrada" className="text-3xl sm:text-4xl">
+        <PageHeading documentTitle="Página não encontrada" noIndex className="text-3xl sm:text-4xl">
           Esta cena foi cortada na edição
         </PageHeading>
         <p className="text-pretty text-muted-foreground">

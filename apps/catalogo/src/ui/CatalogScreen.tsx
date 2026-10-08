@@ -21,6 +21,7 @@ import {
   toCatalogSearchParams,
 } from '../domain/catalog-params';
 import type { CatalogState } from '../domain/catalog-params';
+import { catalogDescription } from '../domain/catalog-description';
 import { catalogQueryKey, fetchCatalog, toCatalogRequest } from '../domain/catalog-request';
 import { resultsSummary } from '../domain/results-summary';
 import { SEARCH_DEBOUNCE_MS, useDebouncedCallback } from '../domain/use-debounced-callback';
@@ -96,7 +97,10 @@ export function CatalogScreen() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeading documentTitle={state.query ? `Busca: ${state.query}` : 'Filmes'}>
+      <PageHeading
+        documentTitle={state.query ? `Busca: ${state.query}` : 'Filmes'}
+        description={catalogDescription(state, genreName)}
+      >
         Filmes
       </PageHeading>
 

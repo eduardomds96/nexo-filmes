@@ -152,7 +152,9 @@ export function DashboardScreen() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeading documentTitle="Painel">Painel</PageHeading>
+      <PageHeading documentTitle="Painel" noIndex>
+        Painel
+      </PageHeading>
       {content}
     </div>
   );

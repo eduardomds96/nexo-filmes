@@ -23,6 +23,7 @@ import { useMemo } from 'react';
 import { Link, useParams } from 'react-router';
 import { toast } from 'sonner';
 
+import { movieDescription } from '../domain/movie-description';
 import { parseMovieId } from '../domain/movie-id';
 import { detailsToSnapshot } from '../domain/rating-form';
 import { getTmdbClient } from '../services/tmdb';
@@ -49,7 +50,9 @@ function NotFound() {
   return (
     <div className="flex flex-col gap-6">
       <BackLink />
-      <PageHeading documentTitle="Filme não encontrado">Filme não encontrado</PageHeading>
+      <PageHeading documentTitle="Filme não encontrado" noIndex>
+        Filme não encontrado
+      </PageHeading>
       <EmptyState
         icon={<Film />}
         title="Este filme não existe ou foi removido"
@@ -157,6 +160,7 @@ function Hero({ movie }: { movie: MovieDetails }) {
             <div className="flex flex-col gap-2">
               <PageHeading
                 documentTitle={movie.title}
+                description={movieDescription(movie)}
                 className="text-3xl leading-tight sm:text-4xl md:text-display"
               >
                 {movie.title}
@@ -299,7 +303,9 @@ export function MovieScreen() {
     return (
       <div className="flex flex-col gap-6">
         <BackLink />
-        <PageHeading documentTitle="Erro ao carregar filme">Detalhe do filme</PageHeading>
+        <PageHeading documentTitle="Erro ao carregar filme" noIndex>
+          Detalhe do filme
+        </PageHeading>
         <ErrorState
           title={rateLimited ? 'Muitas requisições' : 'Não foi possível carregar o filme'}
           message={error.message}

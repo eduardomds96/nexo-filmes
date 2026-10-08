@@ -165,7 +165,9 @@ export function FavoritesScreen() {
 
   return (
     <div className="flex flex-col gap-6">
-      <PageHeading documentTitle="Favoritos">Seus favoritos</PageHeading>
+      <PageHeading documentTitle="Favoritos" noIndex>
+        Seus favoritos
+      </PageHeading>
       <p ref={summaryRef} tabIndex={-1} className="text-sm text-muted-foreground">
         {status === 'ready' ? `${plural(items.length, 'filme', 'filmes')} na sua lista.` : ''}
       </p>
