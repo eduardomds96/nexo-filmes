@@ -206,7 +206,10 @@ test.describe('avaliação', () => {
       .getByRole('navigation', { name: 'Principal' })
       .getByRole('link', { name: 'Painel' })
       .click();
-    await expect(page.getByText('8,5', { exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Painel' })).toBeVisible();
+    await expect(page.locator('main dl > *').filter({ hasText: 'Nota média' })).toContainText(
+      '8,5',
+    );
   });
 });
 
