@@ -2,12 +2,12 @@ import type { MovieSnapshot, Rating } from '@nexo/contracts';
 import {
   Button,
   Card,
+  ChoiceChip,
   EmptyState,
   ErrorState,
   formatUserScore,
-  Label,
   MoviePoster,
-  NativeSelect,
+  ScrollRow,
   PageHeading,
   plural,
   Skeleton,
@@ -238,30 +238,37 @@ export function RatingsScreen() {
         Minhas avaliações
       </PageHeading>
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-4">
         <p ref={summaryRef} tabIndex={-1} className="text-muted-foreground">
           {status === 'ready' && summary.count > 0
             ? `${plural(summary.count, 'filme avaliado', 'filmes avaliados')} · média ${formatAverage(summary.average ?? 0)}`
             : ''}
         </p>
         {status === 'ready' && summary.count > 1 && (
-          <div className="flex flex-col gap-2 sm:w-56">
-            <Label htmlFor="ordem-avaliacoes">Ordenar por</Label>
-            <NativeSelect
-              id="ordem-avaliacoes"
-              value={order}
-              onChange={(event) => {
-                const next = parseRatingsOrder(event.target.value);
-                setSearchParams(next === 'recentes' ? {} : { ordem: next }, { replace: true });
-              }}
+          <fieldset className="flex min-w-0 flex-col gap-2">
+            <legend className="mb-2 text-sm font-medium">Ordenar por</legend>
+            <ScrollRow
+              previousLabel="Ordenações anteriores"
+              nextLabel="Mais ordenações"
+              scrollerClassName="-mx-gutter snap-x scroll-px-gutter gap-2 px-gutter py-1 sm:mx-0 sm:px-0"
             >
               {RATINGS_ORDERS.map((option) => (
-                <option key={option.value} value={option.value}>
+                <ChoiceChip
+                  key={option.value}
+                  name="ordem"
+                  value={option.value}
+                  checked={order === option.value}
+                  onSelect={() => {
+                    setSearchParams(option.value === 'recentes' ? {} : { ordem: option.value }, {
+                      replace: true,
+                    });
+                  }}
+                >
                   {option.label}
-                </option>
+                </ChoiceChip>
               ))}
-            </NativeSelect>
-          </div>
+            </ScrollRow>
+          </fieldset>
         )}
       </div>
 

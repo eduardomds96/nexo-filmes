@@ -78,11 +78,16 @@ describe('RatingsScreen', () => {
     await screen.findByText(/3 filmes avaliados/);
     expect(titles()).toEqual(['Baixa', 'Média', 'Alta']);
 
-    await user.selectOptions(screen.getByLabelText('Ordenar por'), 'Maior nota');
+    const order = screen.getByRole('group', { name: 'Ordenar por' });
+    expect(within(order).getByRole('radio', { name: 'Menor nota' })).toHaveProperty(
+      'checked',
+      true,
+    );
+    await user.click(within(order).getByRole('radio', { name: 'Maior nota' }));
     expect(search()).toEqual({ ordem: 'maior-nota' });
     expect(titles()).toEqual(['Alta', 'Média', 'Baixa']);
 
-    await user.selectOptions(screen.getByLabelText('Ordenar por'), 'Título (A–Z)');
+    await user.click(within(order).getByRole('radio', { name: 'Título (A–Z)' }));
     expect(titles()).toEqual(['Alta', 'Baixa', 'Média']);
   });
 
