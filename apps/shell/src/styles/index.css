@@ -11,6 +11,10 @@
 
 @source '../../../../packages/ui/src';
 
+#nexo-skeleton {
+  visibility: visible;
+}
+
 /* Toasts acima da barra de navegação inferior (até 640 px; ver RootLayout). */
 @media (width < 40rem) {
   :root {

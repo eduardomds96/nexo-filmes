@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nexo Filmes</title>
+    <!-- O esqueleto só aparece com o CSS do Shell (que o revela); sem ele, nem o fundo pisca branco. -->
+    <style>
+      html:not(.light) {
+        background-color: #090a0e;
+      }
+      #nexo-skeleton {
+        visibility: hidden;
+      }
+    </style>
     <meta
       name="description"
       content="Explore filmes populares, busque por título e gênero, guarde seus favoritos e avalie o que assistiu."
@@ -27,13 +36,15 @@
   <body>
     <div id="root">
       <!-- Esqueleto estático: aparece antes do JavaScript; o React o substitui no primeiro render. -->
-      <div aria-hidden="true" class="flex min-h-dvh flex-col">
+      <div id="nexo-skeleton" aria-hidden="true" class="flex min-h-dvh flex-col">
         <div class="sticky top-0 z-40 border-b border-border/60 bg-background/75">
           <div class="mx-auto flex h-header max-w-7xl items-center gap-4 px-gutter">
             <span
               class="flex items-center gap-2 py-1 font-display text-lg font-bold tracking-tight"
             >
               <svg
+                width="24"
+                height="24"
                 class="size-6 text-highlight"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
