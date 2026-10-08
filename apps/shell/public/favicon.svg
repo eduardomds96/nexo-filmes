@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Nexo Filmes: claquete âmbar (--primary) sobre o fundo escuro (--background). -->
+  <rect width="64" height="64" rx="14" fill="#090a0e"/>
+  <!-- Haste aberta da claquete, com listras -->
+  <g transform="rotate(-16 12 25)">
+    <rect x="12" y="15" width="40" height="9" rx="2" fill="#f7ad30"/>
+    <path d="M19 15h6l-5 9h-6zM31 15h6l-5 9h-6zM43 15h6l-5 9h-6z" fill="#090a0e"/>
+  </g>
+  <!-- Corpo -->
+  <rect x="12" y="28" width="40" height="24" rx="4" fill="#f7ad30"/>
+  <path d="M19 28h6l-5 7h-6zM31 28h6l-5 7h-6zM43 28h6l-5 7h-6z" fill="#090a0e"/>
+  <rect x="12" y="35" width="40" height="2" fill="#090a0e"/>
+  <path d="M29 40.5v8.5l7.5-4.25z" fill="#090a0e"/>
+</svg>
