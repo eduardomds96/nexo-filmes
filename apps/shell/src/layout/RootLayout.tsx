@@ -4,6 +4,7 @@ import type { LucideIcon } from 'lucide-react';
 import { Link, NavLink, Outlet, ScrollRestoration } from 'react-router';
 
 import { CounterSkeleton, RemoteWidgetError } from '../remotes/fallbacks';
+import { HEADER_REMOTE } from '../remotes/page-remotes';
 import { RemoteBoundary } from '../remotes/RemoteBoundary';
 import { ThemeToggle } from '../theme/ThemeToggle';
 
@@ -98,7 +99,7 @@ export function RootLayout() {
 
           <div className="ml-auto flex items-center gap-1">
             <RemoteBoundary
-              id="minha_area/FavoritesCounter"
+              id={HEADER_REMOTE}
               areaLabel="o contador de favoritos"
               fallback={<CounterSkeleton />}
               renderError={RemoteWidgetError}

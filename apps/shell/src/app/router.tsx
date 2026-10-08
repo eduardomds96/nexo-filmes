@@ -4,6 +4,7 @@ import type { RouteObject } from 'react-router';
 import { RootLayout } from '../layout/RootLayout';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { RouteErrorPage } from '../pages/RouteErrorPage';
+import { PAGE_REMOTES } from '../remotes/page-remotes';
 import { RemoteRoute } from '../remotes/RemoteRoute';
 
 /** Rotas de topo. O Shell é dono delas; cada remote só fornece o componente da página. */
@@ -13,26 +14,10 @@ export const routes: RouteObject[] = [
     errorElement: <RouteErrorPage />,
     children: [
       { index: true, element: <Navigate to="/filmes" replace /> },
-      {
-        path: 'filmes',
-        element: <RemoteRoute id="catalogo/CatalogPage" areaLabel="o catálogo" />,
-      },
-      {
-        path: 'filme/:id',
-        element: <RemoteRoute id="filme/MoviePage" areaLabel="o detalhe do filme" />,
-      },
-      {
-        path: 'favoritos',
-        element: <RemoteRoute id="minha_area/FavoritesPage" areaLabel="seus favoritos" />,
-      },
-      {
-        path: 'avaliacoes',
-        element: <RemoteRoute id="minha_area/RatingsPage" areaLabel="suas avaliações" />,
-      },
-      {
-        path: 'painel',
-        element: <RemoteRoute id="minha_area/DashboardPage" areaLabel="o painel" />,
-      },
+      ...PAGE_REMOTES.map(({ path, id, areaLabel }) => ({
+        path,
+        element: <RemoteRoute id={id} areaLabel={areaLabel} />,
+      })),
       { path: '*', element: <NotFoundPage /> },
     ],
   },
